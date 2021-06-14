@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&family=Signika+Negative:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans&family=Roboto+Condensed:ital,wght@1,300&family=Roboto:ital,wght@0,400;1,300&family=Signika+Negative:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Noto+Sans+JP:wght@300;400&family=Signika+Negative&display=swap");
+.companyName {
+  font-family: "Signika Negative", sans-serif;
+  color: #616263;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 0;
+}
+.title {
+  text-transform: capitalize;
+  font-family: "Lato", sans-serif;
+}

@@ -1,0 +1,13 @@
+
+
+
+/* body::after{
+    content: "";
+    position: absolute;    
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    background: rgba(0, 0, 0, 0.5);
+    overflow-x: hidden;
+    box-shadow: 120px 100px 250px #000000 inset, -120px -100px 250px #000000 inset;
+} */

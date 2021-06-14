@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+
+body{
+    background: linear-gradient(rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)),radial-gradient(transparent,black),url('../images/main-background.jpg') center center no-repeat;
+    background-attachment: fixed;
+    background-size: cover;   
+    overflow-x: hidden;
+}

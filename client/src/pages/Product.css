@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&family=Signika+Negative:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans&family=Roboto+Condensed:ital,wght@1,300&family=Roboto:ital,wght@0,400;1,300&family=Signika+Negative:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Staatliches&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Staatliches&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Noto+Sans+JP:wght@300;400&family=Roboto:ital,wght@0,300;1,100&family=Signika+Negative&display=swap");
+.titleproduct {
+  text-transform: capitalize;
+  font-family: "Staatliches", cursive;
+  font-size: 2.5rem;
+}
+.companyNameproduct {
+  font-family: "Signika Negative", sans-serif;
+  color: #616263;
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.priceproduct {
+  font-family: "Staatliches", cursive;
+  font-size: 3vh;
+}
+.descriptionproduct {
+  font-size: 2.75vh;
+  margin: 0 0 3vh 0;
+  font-family: "Noto Sans JP", sans-serif;
+}
+.aboutheading {
+  font-size: 3vh;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-family: "Signika Negative", sans-serif;
+}
+.colorheading {
+  font-size: 3vh;
+  font-weight: 600;
+  display: inline-block;
+  font-family: "Signika Negative", sans-serif;
+  margin-right: 3.5rem;
+}
+.categoryheading,
+.quantityheading {
+  margin-right: 1rem;
+  font-size: 3vh;
+  font-weight: 600;
+  display: inline-block;
+  font-family: "Signika Negative", sans-serif;
+}
+.category {
+  font-size: 2.75vh;
+  display: inline-block;
+  font-family: "Noto Sans JP", sans-serif;
+  text-transform: capitalize;
+  margin-right: 1rem;
+}
+.quantity {
+  display: inline-block;
+}

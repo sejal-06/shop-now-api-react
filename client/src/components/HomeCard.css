@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Signika+Negative:wght@400;700&display=swap");
+.gridimg:hover + div {
+  /* filter: brightness(0.5); */
+
+  display: inline;
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  padding: 3vh 0px;
+  font-size: 5vh;
+  font-family: "Signika Negative", sans-serif;
+  z-index: 1;
+}
+.gridimg:hover {
+  filter: brightness(0.6);
+}
+.hiddendiv {
+  display: none;
+}

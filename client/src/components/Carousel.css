@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Noto+Sans+JP:wght@300&display=swap");
+.categorygrid > img:hover {
+  filter: brightness(0.75);
+  cursor: pointer;
+}
+.captionbelowavatar {
+  color: white;
+  font-size: "2vh";
+  font-family: "Lato", sans-serif;
+}
