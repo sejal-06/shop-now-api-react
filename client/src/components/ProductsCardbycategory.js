@@ -13,7 +13,6 @@ import Pagination from "@material-ui/lab/Pagination";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import "./ProductCard.css";
 import axios from "axios";
@@ -43,44 +42,51 @@ function ProductsCardbycategory(props) {
   const productslist = props.products;
   const classes = useStyles();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+    const tokenStr = localStorage.getItem("token");
     const wishlistedproducts = await axios.get(
-      `http://192.168.100.94:5000/shop/allproductsofwishlist`,
+      `http://192.168.176.94:5000/shop/allproductsofwishlist`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     setwishlistidarray(wishlistedproducts.data.wishlist);
   });
 
   const addtocart = async (val) => {
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+    const tokenStr = localStorage.getItem("token");
 
     const product = await axios.get(
-      `http://192.168.100.94:5000/shop/addtocart/${val}/1`,
+      `http://192.168.176.94:5000/shop/addtocart/${val}/1`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);
   };
   const addtowishlist = async (val) => {
     // setwishlist(true);
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
-    const product = await axios.get(
-      `http://192.168.100.94:5000/shop/addtowishlist/${val}`,
-      { headers: { Authorization: `Bearer ${tokenStr}` } }
-    );
+    try {
+      const tokenStr = localStorage.getItem("token");
+      const product = await axios.get(
+        `http://192.168.176.94:5000/shop/addtowishlist/${val}`,
+        { headers: { Authorization: `Bearer ${tokenStr}` } }
+      );
+    } catch (err) {
+      console.log(err);
+      window.location.href = "/wishlist";
+    }
     // console.log(product.data);
   };
   const removefromwishlist = async (val) => {
     // setwishlist(false);
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
-    const product = await axios.get(
-      `http://192.168.100.94:5000/shop/deletefromwishlist/${val}`,
-      { headers: { Authorization: `Bearer ${tokenStr}` } }
-    );
+    try {
+      const tokenStr = localStorage.getItem("token");
+      const product = await axios.get(
+        `http://192.168.176.94:5000/shop/deletefromwishlist/${val}`,
+        { headers: { Authorization: `Bearer ${tokenStr}` } }
+      );
+    } catch (err) {
+      console.log(err);
+      window.location.href = "/wishlist";
+    }
     // console.log(product.data);
   };
 
@@ -94,9 +100,9 @@ function ProductsCardbycategory(props) {
             <Grid
               item
               className={classes.productcontainer}
-              xs="6"
-              sm="4"
-              md="3"
+              xs={6}
+              sm={4}
+              md={3}
             >
               <Card className={classes.root}>
                 <CardActionArea>
@@ -108,14 +114,8 @@ function ProductsCardbycategory(props) {
                   </a>
                   <CardContent style={{ padding: "8px", paddingLeft: "13px" }}>
                     <Grid container justify="space-between">
-                      <Grid item xs="11">
-                        <Typography
-                          className="title"
-                          variant="h5"
-                          component="h2"
-                        >
-                          {product.title}
-                        </Typography>
+                      <Grid item xs={11}>
+                        <div className="title">{product.title}</div>
                         <div
                           className="companyName"
                           style={{ textTransform: "uppercase" }}
@@ -123,7 +123,7 @@ function ProductsCardbycategory(props) {
                           {product.companyName}
                         </div>
                       </Grid>
-                      <Grid item xs="1">
+                      <Grid item xs={1}>
                         {wishlistidarray
                           .map((prod, index) => {
                             return prod.productId;
@@ -152,18 +152,6 @@ function ProductsCardbycategory(props) {
                 </CardActionArea>
                 <CardActions>
                   <Grid container justify="space-between">
-                    {/* <Grid item xs={12} md={12}>
-                      <Button
-                        startIcon={<VisibilityIcon />}
-                        size="medium"
-                        style={{ width: "100%", marginBottom: "0.5rem" }}
-                        variant="contained"
-                        color="primary"
-                        href={"/product/" + product._id}
-                      >
-                        View Product
-                      </Button>
-                    </Grid> */}
                     <Grid item xs={12} md={12}>
                       <Button
                         startIcon={<ShoppingCartIcon />}
@@ -184,7 +172,7 @@ function ProductsCardbycategory(props) {
           ))
         )}
       </Grid>
-      {productslist.length ? (
+      {/* {productslist.length ? (
         <div
           style={{ width: "50%", margin: "auto", marginBottom: "30vh" }}
           className={classes.pagination}
@@ -196,7 +184,7 @@ function ProductsCardbycategory(props) {
         </div>
       ) : (
         ""
-      )}
+      )} */}
     </div>
   );
 }

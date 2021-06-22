@@ -27,48 +27,51 @@ function Product() {
   const classes = useStyles();
 
   useEffect(async () => {
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+    const tokenStr = localStorage.getItem("token");
     const wishlistedproducts = await axios.get(
-      `http://192.168.100.94:5000/shop/allproductsofwishlist`,
+      `http://192.168.176.94:5000/shop/allproductsofwishlist`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
+
     setwishlistidarray(wishlistedproducts.data.wishlist);
   });
 
   useEffect(async () => {
     const productjson = await axios.get(
-      `http://192.168.100.94:5000/shop/product/${id}`
+      `http://192.168.176.94:5000/shop/product/${id}`
     );
+    // console.log()
     setproduct(productjson.data.product);
-    // console.log(product);
+    console.log(product);
   }, []);
 
   const addtocart = async (val, count) => {
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+    const tokenStr = localStorage.getItem("token");
     const product = await axios.get(
-      `http://192.168.100.94:5000/shop/addtocart/${val}/${count}`,
+      `http://192.168.176.94:5000/shop/addtocart/${val}/${count}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);
   };
 
   const addtowishlist = async (val) => {
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
-    const product = await axios.get(
-      `http://192.168.100.94:5000/shop/addtowishlist/${val}`,
-      { headers: { Authorization: `Bearer ${tokenStr}` } }
-    );
+    try {
+      const tokenStr = localStorage.getItem("token");
+      const product = await axios.get(
+        `http://192.168.176.94:5000/shop/addtowishlist/${val}`,
+        { headers: { Authorization: `Bearer ${tokenStr}` } }
+      );
+    } catch (err) {
+      console.log(err);
+      window.location.href = "/wishlist";
+    }
     // console.log(product.data);
   };
 
   const removefromwishlist = async (val) => {
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+    const tokenStr = localStorage.getItem("token");
     const product = await axios.get(
-      `http://192.168.100.94:5000/shop/deletefromwishlist/${val}`,
+      `http://192.168.176.94:5000/shop/deletefromwishlist/${val}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);
@@ -76,12 +79,17 @@ function Product() {
 
   return (
     <div>
-      <NavbarFull />
+      {/* <NavbarFull /> */}
       <Paper style={{ margin: "15vh 2vw 5vw 2vw" }}>
         <Grid container spacing={2}>
           <Grid style={{ position: "relative" }} item xs={12} md={4}>
             <div
-              style={{ display: "flex", alignItems: "center", height: "100%" }}
+              style={{
+                display: "flex",
+                // background: "black",
+                alignItems: "center",
+                height: "100%",
+              }}
             >
               <img src={product.imageUrl} width="100%" alt="" />
             </div>
@@ -117,44 +125,107 @@ function Product() {
             <hr />
             <div className="descriptionproduct">{product.description}</div>
 
-            <div className="colorheading">Color</div>
-            <div
-              style={{
-                width: "20px",
-                display: "inline-block",
-                height: "20px",
-                backgroundColor: `${product.color}`,
-              }}
-            ></div>
-
-            <br />
-            <div className="categoryheading">Category</div>
-            <div className="category">{product.category}</div>
-            <br />
-            <div className="quantityheading">Quantity</div>
-            <div className="quantity">
-              <ButtonGroup>
-                <Button
-                  size="small"
-                  aria-label="reduce"
-                  onClick={() => {
-                    setcount(Math.max(count - 1, 1));
-                  }}
-                >
-                  <RemoveIcon fontSize="small" />
-                </Button>
-                <Button size="small">{count}</Button>
-                <Button
-                  size="small"
-                  aria-label="increase"
-                  onClick={() => {
-                    setcount(count + 1);
-                  }}
-                >
-                  <AddIcon fontSize="small" />
-                </Button>
-              </ButtonGroup>
-            </div>
+            <Grid spacing={1} container direction="column">
+              <Grid item>
+                <Grid container>
+                  <Grid item xs={6} sm={4} md={3}>
+                    <div style={{ margin: "5px" }} className="colorheading">
+                      Color
+                    </div>
+                  </Grid>
+                  <Grid item xs={6} sm={8} md={9}>
+                    <div
+                      style={{
+                        margin: "5px",
+                        width: "20px",
+                        height: "20px",
+                        display: "inline-block",
+                        border: "1px solid black",
+                        backgroundColor: `${product.color}`,
+                      }}
+                    ></div>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Grid container>
+                  <Grid item xs={6} sm={4} md={3}>
+                    {product.type && product.type.length ? (
+                      <div style={{ margin: "5px" }} className="colorheading">
+                        Type
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </Grid>
+                  <Grid item xs={6} sm={8} md={9}>
+                    {product.type && product.type.length
+                      ? product.type.map((ty) => (
+                          <div style={{ margin: "5px" }} className="category">
+                            {ty}
+                          </div>
+                        ))
+                      : ""}
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Grid container>
+                  <Grid item xs={6} sm={4} md={3}>
+                    {product.category && product.category.length ? (
+                      <div style={{ margin: "5px" }} className="colorheading">
+                        Category
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </Grid>
+                  <Grid item xs={6} sm={8} md={9}>
+                    {product.category && product.category.length
+                      ? product.category.map((cat) => (
+                          <div style={{ margin: "5px" }} className="category">
+                            {cat}
+                          </div>
+                        ))
+                      : ""}
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Grid container>
+                  <Grid item xs={6} sm={4} md={3}>
+                    <div style={{ margin: "5px" }} className="colorheading">
+                      Quantity
+                    </div>
+                  </Grid>
+                  <Grid item xs={6} sm={8} md={9}>
+                    <div style={{ margin: "5px" }} className="quantity">
+                      <ButtonGroup>
+                        <Button
+                          size="small"
+                          aria-label="reduce"
+                          onClick={() => {
+                            setcount(Math.max(count - 1, 1));
+                          }}
+                        >
+                          <RemoveIcon fontSize="small" />
+                        </Button>
+                        <Button size="small">{count}</Button>
+                        <Button
+                          size="small"
+                          aria-label="increase"
+                          onClick={() => {
+                            setcount(count + 1);
+                          }}
+                        >
+                          <AddIcon fontSize="small" />
+                        </Button>
+                      </ButtonGroup>
+                    </div>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
 
             <Grid style={{ marginTop: "20px" }} container spacing={2}>
               <Grid item xs={12} sm={6}>

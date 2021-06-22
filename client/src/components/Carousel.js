@@ -8,14 +8,13 @@ import womenavatar from "../images/womenavatar.jpg";
 import kidsavatar from "../images/kidsavatar.jpg";
 import accessoriesavatar from "../images/accessoriesavatar.jpg";
 import footwearavatar from "../images/footwearavatar.jpg";
-import jewelleryavatar from "../images/jewelleryavatar.jpg";
+import maskavatar from "../images/maskavatar.jpg";
 import partyavatar from "../images/partyavatar.jpg";
 import casualavatar from "../images/casualavatar.jpg";
 import ethnicavatar from "../images/ethnicavatar.jpg";
 import sareeavatar from "../images/sareeavatar.jpg";
-import goggleavatar from "../images/goggleavatar.jpg";
 import bagavatar from "../images/bagavatar.jpg";
-
+import beautyavatar from "../images/beautyavatar.jpg";
 import "./Carousel.css";
 
 const category = [
@@ -33,9 +32,9 @@ const category = [
   ],
   [
     { type: "Footwear", imgUrl: footwearavatar },
-    { type: "Jewellery", imgUrl: jewelleryavatar },
+    { type: "Mask", imgUrl: maskavatar },
     { type: "Bags", imgUrl: bagavatar },
-    { type: "Goggles", imgUrl: goggleavatar },
+    { type: "Beauty", imgUrl: beautyavatar },
   ],
 ];
 
@@ -60,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Team() {
+function Carousel() {
   const classes = useStyles();
   const categories = category;
 
@@ -72,7 +71,7 @@ function Team() {
   return (
     <div className={classes.main}>
       <center>
-        {/* <Typography variant="h3">Core Team</Typography> */}
+        {/* <Typography variant="h3">Core Carousel</Typography> */}
         <Slider
           className={classes.slider}
           swipe={true}
@@ -129,4 +128,4 @@ function Team() {
   );
 }
 
-export default Team;
+export default Carousel;

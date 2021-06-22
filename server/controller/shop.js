@@ -2,18 +2,48 @@ const User = require("../models/user");
 const Order = require("../models/order");
 const Product = require("../models/product");
 const { compareSync } = require("bcryptjs");
-
+const moment = require("moment");
 const stripe = require("stripe")(
   "sk_test_51HzJtED3YnSFKpD5mC7LwRXYNYoNaj0h9qQ6r3mqDCOj6BKnVSW7tfwvtwOvoXjT2DaiuECI4gBomVibGh8JZuYo00Ao6JXsmU"
 );
+
+exports.productsafterpagination = async (req, res, next) => {
+  try {
+    const pagenumber = parseInt(req.params.pageno);
+    const numberofprod = await Product.find().countDocuments();
+
+    if (pagenumber <= 0 || Math.ceil(numberofprod / 12) < pagenumber) {
+      return res
+        .status(404)
+        .json({ status: false, error: "Invalid page number" });
+    }
+    const products = await Product.find()
+      .skip((pagenumber - 1) * 12)
+      .limit(12);
+
+    return res.status(200).json({ status: true, products: products });
+  } catch (err) {
+    return res
+      .status(404)
+      .json({ status: false, error: "Something went wrong" });
+  }
+};
+
+exports.countofallproducts = async (req, res, next) => {
+  try {
+    const count = await Product.find().countDocuments();
+    return res.status(200).json({ status: true, count: count });
+  } catch (err) {
+    return res
+      .status(404)
+      .json({ status: false, error: "Something went wrong" });
+  }
+};
 
 exports.allproducts = async (req, res, next) => {
   try {
     const products = await Product.find();
 
-    // if (products.length == 0) {
-    //   return res.status(404).json({ status: false, error: "no products" });
-    // }
     return res.status(200).json({ status: true, products: products });
   } catch (err) {
     console.log(err);
@@ -25,9 +55,10 @@ exports.allproducts = async (req, res, next) => {
 
 exports.allproductsbycategory = async (req, res, next) => {
   try {
-    const category = req.params.category;
+    const category = req.params.category.toLowerCase();
+
     const products = await Product.find({
-      $or: [{ category: category }, { gender: category }],
+      $or: [{ type: category }, { category: category }],
     });
 
     return res.status(200).json({ status: true, products: products });
@@ -320,22 +351,27 @@ exports.placeorder = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ status: false, error: "user not found" });
     }
-    const orders = user.cart;
-    // if (orders.length == 0) {
-    //   return res
-    //     .status(404)
-    //     .json({ status: false, error: "no products to place order" });
-    // }
+    const orders = [];
+    user.cart.forEach((pro) => {
+      orders.push(pro._doc);
+    });
+
+    var momentdate = moment().format("MMMM Do YYYY, h:mm:ss a");
+
+    orders.push({ orderdate: momentdate });
     var userinorders = await Order.findOne({ userId: id });
 
-    await User.findOneAndUpdate({ _id: id }, { cart: [] });
-
     if (!userinorders) {
-      const neworder = new Order({ userId: id, products: [orders] });
+      const neworder = new Order({
+        userId: id,
+        products: [orders],
+      });
       await neworder.save();
       return res.status(200).json({ status: true, order: neworder });
     }
+
     userinorders.products.unshift(orders);
+
     const or = await Order.findOneAndUpdate(
       { userId: id },
       { products: userinorders.products },
@@ -354,6 +390,8 @@ exports.placeorder = async (req, res, next) => {
       //   order: ordersarr,
       // },
     });
+    //remove elements from cart
+    await User.findOneAndUpdate({ _id: id }, { cart: [] });
 
     return res.status(200).json({ status: true, order: or });
   } catch (err) {

@@ -9,6 +9,7 @@ const adminController = require("../controller/admin");
 const router = express.Router({ caseSensitive: false });
 
 const uploader = multer({
+  // fileFilter: fileFilter,
   storage: multer.memoryStorage(), //using this req.file contain field buffer containing whole image file
   limits: {
     fileSize: 5 * 1024 * 1024, // keep images size < 5 MB
@@ -21,9 +22,9 @@ router.post(
   uploader.single("imageUrl"),
   [
     body("title").trim(),
-    body("price", "price should be interger").isInt({ min: 0 }),
-    body("description", "description should contain 100 to 500 words")
-      .isLength({ min: 100, max: 500 })
+    body("price", "price should be positive interger").isInt({ min: 0 }),
+    body("description", "description should contain 50 to 300 words")
+      .isLength({ min: 10, max: 300 })
       .trim(),
   ],
   adminController.postAddProduct
@@ -36,8 +37,8 @@ router.post(
   [
     body("title").trim(),
     body("price", "price should be interger").isInt({ min: 0 }),
-    body("description", "description should contain 100 to 500 words")
-      .isLength({ min: 100, max: 500 })
+    body("description", "description should contain 50 to 300 words")
+      .isLength({ min: 10, max: 300 })
       .trim(),
   ],
   adminController.postEditProduct
@@ -46,4 +47,7 @@ router.post(
 router.get("/productsbyuser", isAuth, adminController.adminProducts);
 
 router.get("/deleteproduct/:productId", isAuth, adminController.deleteProduct);
+
+router.get("/deletedproduct/:productId", adminController.deletedproduct);
+
 module.exports = router;

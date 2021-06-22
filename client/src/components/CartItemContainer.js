@@ -51,14 +51,9 @@ function CartItemCards(props) {
   const [productarr, setproductarr] = useState([]);
   const [totalprice, settotalprice] = useState(0);
 
-  // const [countarr, setcountarr] = useState([]);
-
   const removefromcart = async (val) => {
-    // setcart(false);
-    // console.log(val);
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
-    await axios.get(`http://192.168.100.94:5000/shop/deletefromcart/${val}`, {
+    const tokenStr = localStorage.getItem("token");
+    await axios.get(`http://192.168.176.94:5000/shop/deletefromcart/${val}`, {
       headers: { Authorization: `Bearer ${tokenStr}` },
     });
 
@@ -81,10 +76,9 @@ function CartItemCards(props) {
 
   const handleincrea = async (id, index) => {
     var countval = productarr[index].quantity + 1;
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+    const tokenStr = localStorage.getItem("token");
     await axios.get(
-      `http://192.168.100.94:5000/shop/changequantityofcartto/${id}/${countval}`,
+      `http://192.168.176.94:5000/shop/changequantityofcartto/${id}/${countval}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
 
@@ -99,10 +93,9 @@ function CartItemCards(props) {
       return;
     }
     var countval = productarr[index].quantity - 1;
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+    const tokenStr = localStorage.getItem("token");
     await axios.get(
-      `http://192.168.100.94:5000/shop/changequantityofcartto/${id}/${countval}`,
+      `http://192.168.176.94:5000/shop/changequantityofcartto/${id}/${countval}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
 
@@ -113,15 +106,14 @@ function CartItemCards(props) {
   };
 
   useEffect(async () => {
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+    const tokenStr = localStorage.getItem("token");
 
     var allinfo = [];
 
     var cartproducts = props.cartproducts;
     for (var product of cartproducts) {
       var productbyid = await axios.get(
-        `http://192.168.100.94:5000/shop/product/${product.productId}`,
+        `http://192.168.176.94:5000/shop/product/${product.productId}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
 
@@ -136,7 +128,7 @@ function CartItemCards(props) {
       price += product.price * product.quantity;
     });
     settotalprice(price);
-  });
+  }, []);
 
   return (
     <div>
@@ -147,7 +139,15 @@ function CartItemCards(props) {
               style={{ height: "175px", overflow: "hidden", margin: "1rem" }}
             >
               <Grid style={{ height: "100%" }} container>
-                <Grid style={{ height: "100%" }} item xs={4}>
+                <Grid
+                  className="imagehover"
+                  style={{ height: "100%" }}
+                  onClick={() => {
+                    window.location.href = `/product/${product._id}`;
+                  }}
+                  item
+                  xs={4}
+                >
                   <div
                     style={{
                       display: "flex",

@@ -16,14 +16,10 @@
   font-weight: 900;
   text-transform: capitalize;
 }
-/* .quantityhead {
-  /* margin: 1rem; */
-/* font-size: 1.25rem;
-  margin-right: 1rem; */
-/* font-weight: 600; */
-/* display: inline-block;
-  font-family: "Signika Negative", sans-serif; */
-/* }  */
+
+.imagehover:hover {
+  filter: brightness(0.75);
+}
 
 .billheader {
   font-family: "Staatliches", cursive;

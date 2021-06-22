@@ -1,7 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Signika+Negative:wght@400;700&display=swap");
-.gridimg:hover + div {
-  /* filter: brightness(0.5); */
-
+.ttyl:hover .hiddendiv {
   display: inline;
   left: 0;
   position: absolute;

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const productSchema = new Schema({
+const deletedproductsSchema = new Schema({
   title: {
     type: String,
     required: true,
@@ -35,6 +35,10 @@ const productSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
+  prodId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
 });
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model("Deletedproducts", deletedproductsSchema);

@@ -9,7 +9,7 @@ import HomeCards from "../components/HomeCards";
 function Shop() {
   return (
     <>
-      <NavbarHalf />
+      {/* <NavbarHalf /> */}
       <Carousel />
       <p
         style={{
@@ -20,7 +20,7 @@ function Shop() {
           opacity: "0.9",
         }}
       >
-        Explore the Shop!!
+        Shop till you drop!!
       </p>
       <HomeCards />
     </>

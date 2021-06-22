@@ -23,11 +23,13 @@ class CheckoutForm extends React.Component {
       console.log("invalid amount");
     } else {
       // console.log(result.token);
-      const tokenStr =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+      const tokenStr = localStorage.getItem("token");
       const order = await axios.post(
-        `http://192.168.100.94:5000/shop/placeorder`,
-        { amount: this.state.totalpriceofcart, stripeToken: result.token.id },
+        `http://192.168.176.94:5000/shop/placeorder`,
+        {
+          amount: this.state.totalpriceofcart * 100,
+          stripeToken: result.token.id,
+        },
         {
           headers: { Authorization: `Bearer ${tokenStr}` },
         }
@@ -40,10 +42,9 @@ class CheckoutForm extends React.Component {
   };
 
   async componentDidMount() {
-    const tokenStr =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlamFsQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwYmJjMGNkNGI1MmNjMjJhMGEzYzhiMCIsImlhdCI6MTYyMzY2NDUwOCwiZXhwIjoxNjIzNzA3NzA4fQ.QidUuaEkV8z-Tl2EH40_5uFnHK2bcNWBLJDbZjgcITA";
+    const tokenStr = localStorage.getItem("token");
     const cart = await axios.get(
-      "http://192.168.100.94:5000/shop/allproductsofcart",
+      "http://192.168.176.94:5000/shop/allproductsofcart",
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     const cartarr = cart.data.cart;
@@ -51,7 +52,7 @@ class CheckoutForm extends React.Component {
     var total = 0;
     for (var i = 0; i < cartarr.length; i++) {
       const product = await axios.get(
-        `http://192.168.100.94:5000/shop/product/${cartarr[i].productId}`
+        `http://192.168.176.94:5000/shop/product/${cartarr[i].productId}`
       );
 
       total += product.data.product.price * cartarr[i].quantity;

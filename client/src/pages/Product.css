@@ -34,7 +34,7 @@
 .colorheading {
   font-size: 3vh;
   font-weight: 600;
-  display: inline-block;
+  /* display: inline-block; */
   font-family: "Signika Negative", sans-serif;
   margin-right: 3.5rem;
 }
@@ -43,16 +43,16 @@
   margin-right: 1rem;
   font-size: 3vh;
   font-weight: 600;
-  display: inline-block;
+  /* display: inline-block; */
   font-family: "Signika Negative", sans-serif;
 }
 .category {
   font-size: 2.75vh;
-  display: inline-block;
+  /* display: inline-block; */
   font-family: "Noto Sans JP", sans-serif;
   text-transform: capitalize;
   margin-right: 1rem;
 }
 .quantity {
-  display: inline-block;
+  /* display: inline-block; */
 }

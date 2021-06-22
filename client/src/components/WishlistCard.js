@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Pagination from "@material-ui/lab/Pagination";
-import ReactPaginate from "react-paginate";
+
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -22,12 +22,7 @@ import axios from "axios";
 const useStyles = makeStyles((theme) => ({
   pagination: {
     "& > *": {
-      margin: theme.spacing(0.5),
-    },
-  },
-  backforimg: {
-    [theme.breakpoints.down("sm")]: {
-      background: "black",
+      marginTop: theme.spacing(2),
     },
   },
   topContainer: {
@@ -43,30 +38,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProductsCard(props) {
-  const [wishlistidarray, setwishlistidarray] = useState([]);
-  const [pageno, setpageno] = useState(1);
+function WishlistCard(props) {
+  const [wishlistarray, setwishlistarray] = useState([]);
 
-  const [productslist, setproductslist] = useState([]);
-  const count = props.count;
+  //   const productslist = props.products;
   const classes = useStyles();
 
   useEffect(async () => {
     const tokenStr = localStorage.getItem("token");
-
-    const wishlistedproducts = await axios.get(
+    const wishlistedproductsres = await axios.get(
       `http://192.168.176.94:5000/shop/allproductsofwishlist`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
-    setwishlistidarray(wishlistedproducts.data.wishlist);
+    const wishlistedproducts = wishlistedproductsres.data.wishlist;
+    const newarr = [];
+    for (var i of wishlistedproducts) {
+      const productslist = await axios.get(
+        `http://192.168.176.94:5000/shop/product/${i.productId}`
+      );
+      newarr.push(productslist.data.product);
+    }
+    // console.log(newarr);
+    setwishlistarray(newarr);
+    console.log(wishlistarray);
   });
-
-  useEffect(async () => {
-    const firstpageprodsjson = await axios.get(
-      `http://192.168.176.94:5000/shop/allproducts/1`
-    );
-    setproductslist(firstpageprodsjson.data.products);
-  }, []);
 
   const addtocart = async (val) => {
     const tokenStr = localStorage.getItem("token");
@@ -75,6 +70,7 @@ function ProductsCard(props) {
       `http://192.168.176.94:5000/shop/addtocart/${val}/1`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
+    // console.log(product.data);
   };
   const addtowishlist = async (val) => {
     // setwishlist(true);
@@ -105,22 +101,13 @@ function ProductsCard(props) {
     // console.log(product.data);
   };
 
-  const handleChange = async (event, value) => {
-    setpageno(value);
-
-    const productslistjson = await axios.get(
-      `http://192.168.176.94:5000/shop/allproducts/${value}`
-    );
-    setproductslist(productslistjson.data.products);
-  };
-
   return (
     <div>
       <Grid container spacing={1} className={classes.topContainer}>
-        {productslist.length === 0 ? (
-          <h1>No products</h1>
+        {wishlistarray.length === 0 ? (
+          <h1>No products in wishlist</h1>
         ) : (
-          productslist.map((product) => (
+          wishlistarray.map((product) => (
             <Grid
               item
               className={classes.productcontainer}
@@ -131,12 +118,10 @@ function ProductsCard(props) {
               <Card className={classes.root}>
                 <CardActionArea>
                   <a href={"/product/" + product._id}>
-                    <div className={classes.backforimg}>
-                      <CardMedia
-                        className={classes.media}
-                        image={product.imageUrl}
-                      />
-                    </div>
+                    <CardMedia
+                      className={classes.media}
+                      image={product.imageUrl}
+                    />
                   </a>
 
                   <CardContent style={{ padding: "8px", paddingLeft: "13px" }}>
@@ -154,23 +139,11 @@ function ProductsCard(props) {
                       </Grid>
 
                       <Grid item xs={1}>
-                        {wishlistidarray
-                          .map((prod, index) => {
-                            return prod.productId;
-                          })
-                          .indexOf(product._id) !== -1 ? (
-                          <FavoriteIcon
-                            onClick={(e) => removefromwishlist(product._id)}
-                            color="secondary"
-                            fontSize="medium"
-                          />
-                        ) : (
-                          <FavoriteBorderIcon
-                            onClick={(e) => addtowishlist(product._id)}
-                            color="secondary"
-                            fontSize="medium"
-                          />
-                        )}
+                        <FavoriteIcon
+                          onClick={(e) => removefromwishlist(product._id)}
+                          color="secondary"
+                          fontSize="medium"
+                        />
                       </Grid>
                     </Grid>
                     <Typography
@@ -202,29 +175,17 @@ function ProductsCard(props) {
           ))
         )}
       </Grid>
-
-      <div
-        style={{
-          background: "linear-gradient(90deg,#0000008c,#ffffffc4,#0000008c)",
-          position: "sticky",
-          bottom: "0",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "1vh",
-        }}
+      {/* <div
+        style={{ width: "50%", margin: "auto", marginBottom: "30vh" }}
+        className={classes.pagination}
       >
         <Pagination
-          className={classes.pagination}
-          size="large"
-          onChange={handleChange}
-          count={Math.ceil(count / 12)}
-          color="primary"
-          page={pageno}
-        />
-      </div>
+            count={Math.ceil(productslist.length / 8)}
+            color="primary"
+          />
+      </div> */}
     </div>
   );
 }
 
-export default ProductsCard;
+export default WishlistCard;

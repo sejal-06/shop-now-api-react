@@ -11,14 +11,14 @@ function Productbycategory() {
 
   useEffect(async () => {
     const productslist = await axios.get(
-      `http://192.168.100.94:5000/shop/allproductsbycategory/${category}`
+      `http://192.168.176.94:5000/shop/allproductsbycategory/${category}`
     );
     setproducts(productslist.data.products);
   }, []);
 
   return (
     <div>
-      <NavbarHalf />
+      {/* <NavbarHalf /> */}
       <ProductsCardbycategory products={products} />
     </div>
   );

@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Acme&family=Lobster&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap");
+
+body {
+  background-color: white !important;
+}
+
+.loginheading {
+  font-family: "Acme", sans-serif;
+}
+.errormsg {
+  font-family: "Roboto", sans-serif;
+  color: red;
+}
+.forgotpassword {
+  font-family: "Rubik", sans-serif;
+  color: red;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.resetpass {
+  text-decoration: none;
+}
+
+.resetpass :active {
+  color: blue;
+}

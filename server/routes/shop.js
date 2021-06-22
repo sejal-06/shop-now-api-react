@@ -6,8 +6,10 @@ const isAuth = require("../middleware/is-auth");
 
 const router = express.Router({ caseSensitive: false });
 
-router.get("/allproducts", shopController.allproducts);
+router.get("/allproducts/:pageno", shopController.productsafterpagination);
 
+router.get("/allproducts", shopController.allproducts);
+router.get("/countofallproducts", shopController.countofallproducts);
 router.get(
   "/allproductsbycategory/:category",
   shopController.allproductsbycategory

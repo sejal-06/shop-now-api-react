@@ -36,16 +36,6 @@ const useStyles = makeStyles((theme) => ({
       width: "90% !important",
     },
   },
-  hrtag: {
-    width: "40%",
-    marginTop: "4rem",
-    [theme.breakpoints.down("sm")]: {
-      width: "60% !important",
-    },
-    [theme.breakpoints.down("xs")]: {
-      width: "90% !important",
-    },
-  },
   text: {
     textAlign: "center",
   },
@@ -63,12 +53,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login() {
+function Resetpassword() {
   const classes = useStyles();
 
   let [formData, setFormData] = useState({
     email: "",
-    password: "",
   });
 
   const [showerror, setshowerror] = useState(false);
@@ -87,23 +76,15 @@ function Login() {
 
   async function logindetails() {
     try {
+      await axios.post(`http://192.168.176.94:5000/auth/resetmail`, {
+        email: formData.email,
+      });
+      window.location.reload();
       seterrormsg("");
-      setshowerror("");
-      const loginres = await axios.post(
-        `http://192.168.176.94:5000/auth/login`,
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
-      localStorage.setItem("token", loginres.data.token);
-      window.location.href = "/shop";
+      setshowerror(false);
     } catch (err) {
-      console.log(err);
-      if (err.response) {
-        seterrormsg(err.response.data.error);
-        setshowerror(true);
-      }
+      seterrormsg(err.response.data.error);
+      setshowerror(true);
     }
   }
 
@@ -121,14 +102,14 @@ function Login() {
           >
             <Grid item xs={12}>
               <h1 style={{ textAlign: "center" }} className="loginheading">
-                Login
+                Reset Password
               </h1>
             </Grid>
             <Grid item xs={12} sm={12}>
               <ThemeProvider theme={rawTheme}>
                 <TextField
                   fullWidth
-                  autoComplete="off"
+                  //   autoComplete="off"
                   required
                   variant="outlined"
                   id="email"
@@ -140,23 +121,7 @@ function Login() {
                 />
               </ThemeProvider>
             </Grid>
-            <Grid item xs={12} sm={12}>
-              <ThemeProvider theme={rawTheme}>
-                <TextField
-                  fullWidth
-                  required
-                  autoComplete="off"
-                  variant="outlined"
-                  type="password"
-                  id="password"
-                  name="password"
-                  label="Password"
-                  defaultValue=""
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </ThemeProvider>
-            </Grid>
+
             {showerror ? <div className="errormsg">{errormsg}</div> : ""}
             <Grid item xs={12} className={classes.alignCenter}>
               <Button
@@ -164,61 +129,16 @@ function Login() {
                 color="secondary"
                 className={classes.button}
                 onClick={logindetails}
-                disabled={!formData.email || !formData.password}
+                disabled={!formData.email}
               >
-                Submit
+                Send reset link
               </Button>
             </Grid>
           </Grid>
         </form>
-        <center>
-          <a className="resetpass" href="/resetpassword">
-            <div className="forgotpassword">Forgot Password?</div>
-          </a>
-        </center>
-
-        <div style={{ position: "relative" }}>
-          <hr className={classes.hrtag} />
-
-          <h1
-            style={{
-              position: "absolute",
-              top: "-3rem",
-              marginLeft: "50%",
-              transform: "translateX(-50%)",
-              background: "white",
-              padding: "10px",
-            }}
-          >
-            OR
-          </h1>
-        </div>
-
-        {/* <center> */}
-
-        <Grid
-          container
-          spacing={2}
-          justify="center"
-          alignItems="center"
-          className={classes.container}
-        >
-          <Grid item xs={12} className={classes.alignCenter}>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ marginTop: "0" }}
-              className={classes.button}
-              href="/signup"
-            >
-              Sign up
-            </Button>
-          </Grid>
-        </Grid>
-        {/* </center> */}
       </Paper>
     </>
   );
 }
 
-export default Login;
+export default Resetpassword;

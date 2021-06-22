@@ -1,24 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import NavbarHalf from "../components/NavbarHalf";
 import ProductsCard from "../components/ProductsCard";
 import "./Products.css";
 
 function Products() {
-  const [products, setproducts] = useState([]);
-
+  const [count, setcount] = useState("");
   useEffect(async () => {
-    const productslist = await axios.get(
-      "http://192.168.100.94:5000/shop/allproducts"
+    const countjson = await axios.get(
+      `http://192.168.176.94:5000/shop/countofallproducts`
     );
-    setproducts(productslist.data.products);
+
+    setcount(countjson.data.count);
   }, []);
 
   return (
     <div>
-      <NavbarHalf />
-      <ProductsCard products={products} />
+      {/* <NavbarHalf /> */}
+      <ProductsCard count={count} />
     </div>
   );
 }
