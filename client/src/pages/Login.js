@@ -89,13 +89,10 @@ function Login() {
     try {
       seterrormsg("");
       setshowerror("");
-      const loginres = await axios.post(
-        `http://192.168.176.94:5000/auth/login`,
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
+      const loginres = await axios.post(`http://localhost:5000/auth/login`, {
+        email: formData.email,
+        password: formData.password,
+      });
       localStorage.setItem("token", loginres.data.token);
       window.location.href = "/shop";
     } catch (err) {

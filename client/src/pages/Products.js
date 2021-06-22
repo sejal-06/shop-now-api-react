@@ -9,7 +9,7 @@ function Products() {
   const [count, setcount] = useState("");
   useEffect(async () => {
     const countjson = await axios.get(
-      `http://192.168.176.94:5000/shop/countofallproducts`
+      `http://localhost:5000/shop/countofallproducts`
     );
 
     setcount(countjson.data.count);

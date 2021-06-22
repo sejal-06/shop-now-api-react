@@ -55,7 +55,7 @@ function ProductsCard(props) {
     const tokenStr = localStorage.getItem("token");
 
     const wishlistedproducts = await axios.get(
-      `http://192.168.176.94:5000/shop/allproductsofwishlist`,
+      `http://localhost:5000/shop/allproductsofwishlist`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     setwishlistidarray(wishlistedproducts.data.wishlist);
@@ -63,7 +63,7 @@ function ProductsCard(props) {
 
   useEffect(async () => {
     const firstpageprodsjson = await axios.get(
-      `http://192.168.176.94:5000/shop/allproducts/1`
+      `http://localhost:5000/shop/allproducts/1`
     );
     setproductslist(firstpageprodsjson.data.products);
   }, []);
@@ -72,7 +72,7 @@ function ProductsCard(props) {
     const tokenStr = localStorage.getItem("token");
 
     const product = await axios.get(
-      `http://192.168.176.94:5000/shop/addtocart/${val}/1`,
+      `http://localhost:5000/shop/addtocart/${val}/1`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
   };
@@ -81,7 +81,7 @@ function ProductsCard(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.176.94:5000/shop/addtowishlist/${val}`,
+        `http://localhost:5000/shop/addtowishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -95,7 +95,7 @@ function ProductsCard(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.176.94:5000/shop/deletefromwishlist/${val}`,
+        `http://localhost:5000/shop/deletefromwishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -109,7 +109,7 @@ function ProductsCard(props) {
     setpageno(value);
 
     const productslistjson = await axios.get(
-      `http://192.168.176.94:5000/shop/allproducts/${value}`
+      `http://localhost:5000/shop/allproducts/${value}`
     );
     setproductslist(productslistjson.data.products);
   };

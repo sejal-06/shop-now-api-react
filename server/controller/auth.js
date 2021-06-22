@@ -111,7 +111,7 @@ exports.resetmail = async (req, res, next) => {
               </p>
               <button
                   style="margin-left:35%;padding: 0.5rem 1rem;border-radius: 5px;margin-bottom: 3%;background-color: teal;"><a
-                      href="http://192.168.176.94:3000/confirmreset/${resettoken}"
+                      href="http://localhost:3000/confirmreset/${resettoken}"
                       style="text-decoration: none;color:white;font-size: 150%;font-style: inherit;font-weight: 600;">Reset Password</a></button>
       
               <h4 style="margin-left:5px">This reset is valid for once within <em>1 hour</em> !</h4>

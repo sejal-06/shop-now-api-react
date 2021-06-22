@@ -87,7 +87,7 @@
 
 //   async function logindetails() {
 //     try {
-//       const loginres = await axios.post(`http://192.168.176.94:5000/auth/login`, {
+//       const loginres = await axios.post(`http://localhost:5000/auth/login`, {
 //         title: formData.title,
 //         price: formData.price,
 //       });

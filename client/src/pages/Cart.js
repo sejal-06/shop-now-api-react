@@ -12,7 +12,7 @@ function Cart() {
   useEffect(async () => {
     const tokenStr = localStorage.getItem("token");
     const products = await axios.get(
-      `http://192.168.176.94:5000/shop/allproductsofcart`,
+      `http://localhost:5000/shop/allproductsofcart`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     setcartproducts(products.data.cart);

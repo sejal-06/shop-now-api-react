@@ -34,12 +34,9 @@ function Orders() {
   useEffect(async () => {
     try {
       const tokenStr = localStorage.getItem("token");
-      var allorders = await axios.get(
-        `http://192.168.176.94:5000/shop/allorders`,
-        {
-          headers: { Authorization: `Bearer ${tokenStr}` },
-        }
-      );
+      var allorders = await axios.get(`http://localhost:5000/shop/allorders`, {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      });
       setordersarr(allorders.data.orders);
 
       var ini = [];
@@ -57,12 +54,12 @@ function Orders() {
           var productjson;
           try {
             productjson = await axios.get(
-              `http://192.168.176.94:5000/shop/product/${id}`
+              `http://localhost:5000/shop/product/${id}`
             );
           } catch (err) {
             if (err.response && err.response.data.msg == "product not found") {
               productjson = await axios.get(
-                `http://192.168.176.94:5000/admin/deletedproduct/${id}`
+                `http://localhost:5000/admin/deletedproduct/${id}`
               );
               deleted.push(id);
             }

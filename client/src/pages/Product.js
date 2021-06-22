@@ -29,7 +29,7 @@ function Product() {
   useEffect(async () => {
     const tokenStr = localStorage.getItem("token");
     const wishlistedproducts = await axios.get(
-      `http://192.168.176.94:5000/shop/allproductsofwishlist`,
+      `http://localhost:5000/shop/allproductsofwishlist`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
 
@@ -38,7 +38,7 @@ function Product() {
 
   useEffect(async () => {
     const productjson = await axios.get(
-      `http://192.168.176.94:5000/shop/product/${id}`
+      `http://localhost:5000/shop/product/${id}`
     );
     // console.log()
     setproduct(productjson.data.product);
@@ -48,7 +48,7 @@ function Product() {
   const addtocart = async (val, count) => {
     const tokenStr = localStorage.getItem("token");
     const product = await axios.get(
-      `http://192.168.176.94:5000/shop/addtocart/${val}/${count}`,
+      `http://localhost:5000/shop/addtocart/${val}/${count}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);
@@ -58,7 +58,7 @@ function Product() {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.176.94:5000/shop/addtowishlist/${val}`,
+        `http://localhost:5000/shop/addtowishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -71,7 +71,7 @@ function Product() {
   const removefromwishlist = async (val) => {
     const tokenStr = localStorage.getItem("token");
     const product = await axios.get(
-      `http://192.168.176.94:5000/shop/deletefromwishlist/${val}`,
+      `http://localhost:5000/shop/deletefromwishlist/${val}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);

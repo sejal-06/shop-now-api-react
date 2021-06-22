@@ -12,7 +12,7 @@ function Wishlist(props) {
   // useEffect(async () => {
   //   const tokenStr = localStorage.getItem("token");
   //   const productslist = await axios.get(
-  //     "http://192.168.176.94:5000/shop/allproductsofwishlist",
+  //     "http://localhost:5000/shop/allproductsofwishlist",
   //     {
   //       headers: { Authorization: `Bearer ${tokenStr}` },
   //     }

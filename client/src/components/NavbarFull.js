@@ -205,13 +205,9 @@ function NavbarFull() {
       formdata.append("description", formData.description);
 
       const tokenStr = localStorage.getItem("token");
-      await axios.post(
-        `http://192.168.176.94:5000/admin/addproduct`,
-        formdata,
-        {
-          headers: { Authorization: `Bearer ${tokenStr}` },
-        }
-      );
+      await axios.post(`http://localhost:5000/admin/addproduct`, formdata, {
+        headers: { Authorization: `Bearer ${tokenStr}` },
+      });
 
       handleClose();
       window.location.href = "/adminproducts";
@@ -244,7 +240,7 @@ function NavbarFull() {
     // setInterval(async () => {
     const tokenStr = localStorage.getItem("token");
     const cartres = await axios.get(
-      "http://192.168.176.94:5000/shop/allproductsofcart",
+      "http://localhost:5000/shop/allproductsofcart",
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     const prodarr = cartres.data.cart;

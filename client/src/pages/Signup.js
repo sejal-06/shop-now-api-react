@@ -93,7 +93,7 @@ function Signup() {
     try {
       seterrormsg("");
       seterrorparam("");
-      await axios.post(`http://192.168.176.94:5000/auth/signup`, {
+      await axios.post(`http://localhost:5000/auth/signup`, {
         firstname: formData.firstname,
         lastname: formData.lastname,
         username: formData.username,

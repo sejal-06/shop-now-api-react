@@ -75,13 +75,10 @@ function Confirmreset() {
   }
   async function handlesubmit() {
     try {
-      await axios.post(
-        `http://192.168.176.94:5000/auth/changepass/${resettoken}`,
-        {
-          password: formData.password,
-          confirmPassword: formData.confirmPassword,
-        }
-      );
+      await axios.post(`http://localhost:5000/auth/changepass/${resettoken}`, {
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+      });
       localStorage.setItem("token", null);
       window.location.href = "/login";
     } catch (err) {

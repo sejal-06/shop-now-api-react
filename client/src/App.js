@@ -30,7 +30,7 @@ function App() {
   useEffect(async () => {
     try {
       const tokenStr = localStorage.getItem("token");
-      await axios.get(`http://192.168.176.94:5000/auth/isauth`, {
+      await axios.get(`http://localhost:5000/auth/isauth`, {
         headers: { Authorization: `Bearer ${tokenStr}` },
       });
       setisauth(true);
