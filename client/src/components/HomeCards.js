@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     position: "relative",
-    padding: theme.spacing(1),
+    padding: theme.spacing(0.5),
     textAlign: "center",
     color: theme.palette.text.secondary,
   },
@@ -33,7 +33,7 @@ function HomeCards() {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paper}>
             <div class="ttyl">

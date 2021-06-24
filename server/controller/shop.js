@@ -351,6 +351,10 @@ exports.placeorder = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ status: false, error: "user not found" });
     }
+    if (user.cart.length == 0) {
+      // console.log("inside this");
+      return res.status(404).json({ status: false, error: "no item to order" });
+    }
     const orders = [];
     user.cart.forEach((pro) => {
       orders.push(pro._doc);
@@ -380,7 +384,7 @@ exports.placeorder = async (req, res, next) => {
 
     const token = req.body.stripeToken;
     const amount = req.body.amount;
-    console.log(token);
+    // console.log(token);
     await stripe.charges.create({
       amount: amount,
       currency: "inr",
@@ -410,12 +414,34 @@ exports.allorders = async (req, res, next) => {
     if (!order) {
       return res.status(200).json({ status: true, msg: "no orders yet" });
     }
-    return res.status(200).json({ status: true, orders: order.products });
+    return res
+      .status(200)
+      .json({ status: true, msg: "order fetched", orders: order.products });
   } catch (err) {
     console.log(err);
     return res.status(404).json({ status: false, error: "Order not placed" });
   }
 };
+
+exports.order = async (req, res, next) => {
+  try {
+    const index = req.params.index;
+    const id = req.userId;
+    const order = await Order.findOne({ userId: id });
+    if (!order) {
+      return res.status(404).json({ status: false, error: "not found" });
+    }
+    if (index < 0 || index >= order.products.length) {
+      return res.status(404).json({ status: false, error: "invalid order" });
+    }
+
+    return res.status(200).json({ status: true, order: order.products[index] });
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({ status: false, error: "not found" });
+  }
+};
+
 exports.getinvoice = async (req, res, next) => {
   try {
     const id = req.userId;

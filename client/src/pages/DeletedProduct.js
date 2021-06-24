@@ -17,10 +17,10 @@ function DeletedProduct() {
 
   useEffect(async () => {
     const productjson = await axios.get(
-      `http://localhost:5000/admin/deletedproduct/${id}`
+      `http://192.168.72.94:5000/admin/deletedproduct/${id}`
     );
     setproduct(productjson.data.product);
-    console.log(product);
+    // console.log(product);
   }, []);
 
   return (

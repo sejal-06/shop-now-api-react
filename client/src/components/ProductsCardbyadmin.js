@@ -165,6 +165,28 @@ function ProductsCardbyadmin(props) {
     beauty: false,
   });
 
+  const typehandleDelete = (data) => {
+    // console.log(data);
+    Object.keys(type).forEach((key) => {
+      if (key == data) {
+        type[key] = false;
+        const newtype = { ...type };
+        settype(newtype);
+      }
+    });
+  };
+
+  const categoryhandleDelete = (data) => {
+    // console.log(data);
+    Object.keys(category).forEach((key) => {
+      if (key == data) {
+        category[key] = false;
+        const newcategory = { ...category };
+        setcategory(newcategory);
+      }
+    });
+  };
+
   async function productdetails() {
     setshowerror(false);
     try {
@@ -196,7 +218,7 @@ function ProductsCardbyadmin(props) {
 
       const tokenStr = localStorage.getItem("token");
       await axios.post(
-        `http://localhost:5000/admin/editproduct/${editproductid}`,
+        `http://192.168.43.76:5000/admin/editproduct/${editproductid}`,
         formdata,
         {
           headers: { Authorization: `Bearer ${tokenStr}` },
@@ -228,57 +250,62 @@ function ProductsCardbyadmin(props) {
   };
 
   const handleeditClickOpen = async (id) => {
-    seteditproductid(id);
-    const productjson = await axios.get(
-      `http://localhost:5000/shop/product/${id}`
-    );
+    try {
+      seteditproductid(id);
+      const productjson = await axios.get(
+        `http://192.168.43.76:5000/shop/product/${id}`
+      );
 
-    const productinfo = productjson.data.product;
-    setFormData({
-      title: productinfo.title,
-      price: productinfo.price,
-      companyName: productinfo.companyName,
-      imageUrl: productinfo.imageUrl,
-      color: productinfo.color,
-      description: productinfo.description,
-    });
-    var newtype = {
-      men: false,
-      women: false,
-      kids: false,
-      party: false,
-      casual: false,
-      ethnic: false,
-      sarees: false,
-      accessories: false,
-      footwear: false,
-      bags: false,
-      mask: false,
-      beauty: false,
-    };
-    productinfo.type.forEach((ty) => {
-      newtype[ty] = true;
-    });
-    settype(newtype);
+      const productinfo = productjson.data.product;
+      setFormData({
+        title: productinfo.title,
+        price: productinfo.price,
+        companyName: productinfo.companyName,
+        imageUrl: productinfo.imageUrl,
+        color: productinfo.color,
+        description: productinfo.description,
+      });
+      var newtype = {
+        men: false,
+        women: false,
+        kids: false,
+        party: false,
+        casual: false,
+        ethnic: false,
+        sarees: false,
+        accessories: false,
+        footwear: false,
+        bags: false,
+        mask: false,
+        beauty: false,
+      };
+      productinfo.type.forEach((ty) => {
+        newtype[ty] = true;
+      });
+      settype(newtype);
 
-    var newcategory = {
-      backpacks: false,
-      watches: false,
-      shirts: false,
-      jewellery: false,
-      goggles: false,
-      perfumes: false,
-      dresses: false,
-      shoes: false,
-      jeans: false,
-      tshirts: false,
-    };
-    productinfo.category.forEach((cat) => {
-      newcategory[cat] = true;
-    });
-    setcategory(newcategory);
+      var newcategory = {
+        backpacks: false,
+        watches: false,
+        shirts: false,
+        jewellery: false,
+        goggles: false,
+        perfumes: false,
+        dresses: false,
+        shoes: false,
+        jeans: false,
+        tshirts: false,
+      };
+      productinfo.category.forEach((cat) => {
+        newcategory[cat] = true;
+      });
+      setcategory(newcategory);
 
-    seteditOpen(true);
+      seteditOpen(true);
+    } catch (err) {
+      console.log(err);
+      window.location.reload();
+    }
   };
   const handleeditClose = () => {
     seteditOpen(false);
@@ -304,9 +331,9 @@ function ProductsCardbyadmin(props) {
   }
 
   const handleYes = async (val) => {
-    console.log(val);
+    // console.log(val);
     const tokenStr = localStorage.getItem("token");
-    await axios.get(`http://localhost:5000/admin/deleteproduct/${val}`, {
+    await axios.get(`http://192.168.43.76:5000/admin/deleteproduct/${val}`, {
       headers: { Authorization: `Bearer ${tokenStr}` },
     });
 
@@ -350,63 +377,7 @@ function ProductsCardbyadmin(props) {
                     }}
                   >
                     <Grid container>
-                      <Grid item xs={12}>
-                        <div
-                          onClick={(e) => {
-                            setdeleteproductid(product._id);
-                            handleClickOpen();
-                          }}
-                          // onClick={(e) => handlecheck(product._id)}
-                          className="icondiv"
-                          style={{
-                            position: "absolute",
-                            top: "0",
-                            right: "0",
-                            marginTop: "13px",
-                            marginRight: "8px",
-                            padding: "8px",
-                          }}
-                        >
-                          <DeleteIcon />
-                        </div>
-
-                        <Dialog
-                          open={open}
-                          onClose={handleClose}
-                          PaperComponent={PaperComponent}
-                          // aria-labelledby="draggable-dialog-title"
-                        >
-                          <DialogTitle
-                            style={{ cursor: "move" }}
-                            id="draggable-dialog-title"
-                          >
-                            Delete Product
-                          </DialogTitle>
-                          <DialogContent>
-                            <DialogContentText>
-                              Are you sure you want to delete this product?
-                            </DialogContentText>
-                          </DialogContent>
-                          <DialogActions>
-                            <Button
-                              autoFocus
-                              onClick={handleNo}
-                              color="primary"
-                            >
-                              No
-                            </Button>
-                            <Button
-                              onClick={() => {
-                                // debugger;
-                                handleYes(deleteproductid);
-                              }}
-                              color="primary"
-                            >
-                              Yes
-                            </Button>
-                          </DialogActions>
-                        </Dialog>
-
+                      <Grid item xs={11}>
                         <div className="title" variant="h5" component="h2">
                           {product.title}
                         </div>
@@ -415,6 +386,17 @@ function ProductsCardbyadmin(props) {
                           style={{ textTransform: "uppercase" }}
                         >
                           {product.companyName}
+                        </div>
+                      </Grid>
+                      <Grid xs={1}>
+                        <div
+                          onClick={(e) => {
+                            setdeleteproductid(product._id);
+                            handleClickOpen();
+                          }}
+                          className="icondiv"
+                        >
+                          <DeleteIcon />
                         </div>
                       </Grid>
                     </Grid>
@@ -434,339 +416,9 @@ function ProductsCardbyadmin(props) {
                         variant="contained"
                         color="primary"
                         onClick={() => handleeditClickOpen(product._id)}
-                        // href={"/editproduct/" + product._id}
                       >
                         Edit Product
                       </Button>
-
-                      <Dialog
-                        open={editOpen}
-                        onClose={handleeditClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                      >
-                        <DialogTitle id="alert-dialog-title">
-                          <Grid item xs={12}>
-                            <div
-                              style={{ textAlign: "center", fontSize: "2rem" }}
-                              className="loginheading"
-                            >
-                              Edit Product
-                            </div>
-                          </Grid>
-                        </DialogTitle>
-                        <DialogContent>
-                          <DialogContentText id="alert-dialog-description">
-                            <form>
-                              <Grid
-                                container
-                                spacing={2}
-                                justify="center"
-                                alignItems="center"
-                                className={classes.container}
-                              >
-                                <Grid item xs={12} sm={6}>
-                                  <ThemeProvider theme={rawTheme}>
-                                    <TextField
-                                      fullWidth
-                                      autoComplete="off"
-                                      required
-                                      variant="outlined"
-                                      id="title"
-                                      name="title"
-                                      label="Title"
-                                      defaultValue=""
-                                      value={formData.title}
-                                      onChange={handleChange}
-                                    />
-                                  </ThemeProvider>
-                                </Grid>
-
-                                <Grid item xs={12} sm={6}>
-                                  <ThemeProvider theme={rawTheme}>
-                                    <TextField
-                                      fullWidth
-                                      required
-                                      autoComplete="off"
-                                      variant="outlined"
-                                      type="Number"
-                                      id="price"
-                                      name="price"
-                                      label="Price"
-                                      defaultValue=""
-                                      value={formData.price}
-                                      onChange={handleChange}
-                                    />
-                                  </ThemeProvider>
-                                </Grid>
-
-                                <Grid item xs={12} sm={12}>
-                                  <ThemeProvider theme={rawTheme}>
-                                    <TextField
-                                      fullWidth
-                                      required
-                                      autoComplete="off"
-                                      variant="outlined"
-                                      id="companyName"
-                                      name="companyName"
-                                      label="Company Name"
-                                      defaultValue=""
-                                      value={formData.companyName}
-                                      onChange={handleChange}
-                                    />
-                                  </ThemeProvider>
-                                </Grid>
-
-                                <Grid item xs={12} sm={12}>
-                                  <ThemeProvider theme={rawTheme}>
-                                    <TextField
-                                      fullWidth
-                                      required
-                                      autoComplete="off"
-                                      variant="outlined"
-                                      type="File"
-                                      id="imageUrl"
-                                      name="imageUrl"
-                                      // placeholder="Product image"
-                                      defaultValue=""
-                                      // value={file}
-                                      onChange={handleFile}
-                                      ref={inputFile}
-                                    />
-                                  </ThemeProvider>
-                                </Grid>
-
-                                <Grid item xs={12} sm={12}>
-                                  <ThemeProvider theme={rawTheme}>
-                                    <TextField
-                                      fullWidth
-                                      required
-                                      autoComplete="off"
-                                      variant="outlined"
-                                      type="color"
-                                      id="color"
-                                      name="color"
-                                      label="Product Color"
-                                      //   defaultValue=""
-                                      value={formData.color}
-                                      onChange={handleChange}
-                                    />
-                                  </ThemeProvider>
-                                </Grid>
-
-                                <Grid
-                                  style={{ position: "relative" }}
-                                  item
-                                  xs={12}
-                                  sm={12}
-                                >
-                                  <ThemeProvider
-                                    style={{ position: "relative" }}
-                                    theme={rawTheme}
-                                  >
-                                    {Object.values(type).some(
-                                      (val) => val == true
-                                    ) ? (
-                                      <div
-                                        component="ul"
-                                        className={classes.chiproot}
-                                      >
-                                        {Object.keys(type).map((ty) => (
-                                          <li>
-                                            {type[ty] ? (
-                                              <Chip
-                                                className={classes.chip}
-                                                // onDelete={handleDelete(men)}
-                                                style={{
-                                                  textTransform: "capitalize",
-                                                }}
-                                                label={ty}
-                                              />
-                                            ) : (
-                                              ""
-                                            )}
-                                          </li>
-                                        ))}
-                                      </div>
-                                    ) : (
-                                      <div
-                                        style={{
-                                          color: "black",
-                                          marginTop: "1rem",
-                                        }}
-                                      >
-                                        Select type of your product*
-                                      </div>
-                                    )}
-                                  </ThemeProvider>
-                                </Grid>
-
-                                <div className={classes.typeroot}>
-                                  <FormControl
-                                    component="fieldset"
-                                    className={classes.formControl}
-                                  >
-                                    <Grid
-                                      container
-                                      style={{ paddingLeft: "1rem" }}
-                                    >
-                                      {Object.keys(type).map((ty) => (
-                                        <Grid item xs={6} sm={4}>
-                                          <FormControlLabel
-                                            control={
-                                              <Checkbox
-                                                checked={type[ty]}
-                                                onChange={handleTypeChange}
-                                                name={ty}
-                                              />
-                                            }
-                                            style={{
-                                              textTransform: "capitalize",
-                                            }}
-                                            label={ty}
-                                          />
-                                        </Grid>
-                                      ))}
-                                    </Grid>
-                                  </FormControl>
-                                </div>
-
-                                <Grid
-                                  style={{ position: "relative" }}
-                                  item
-                                  xs={12}
-                                  sm={12}
-                                >
-                                  <ThemeProvider
-                                    style={{ position: "relative" }}
-                                    theme={rawTheme}
-                                  >
-                                    {Object.values(category).some(
-                                      (val) => val == true
-                                    ) ? (
-                                      <div
-                                        component="ul"
-                                        className={classes.chiproot}
-                                      >
-                                        {Object.keys(category).map((cat) => (
-                                          <li>
-                                            {category[cat] ? (
-                                              <Chip
-                                                className={classes.chip}
-                                                // onDelete={handleDelete(men)}
-                                                style={{
-                                                  textTransform: "capitalize",
-                                                }}
-                                                label={cat}
-                                              />
-                                            ) : (
-                                              ""
-                                            )}
-                                          </li>
-                                        ))}
-                                      </div>
-                                    ) : (
-                                      <div
-                                        style={{
-                                          color: "black",
-                                          marginTop: "1rem",
-                                        }}
-                                      >
-                                        Select category of your product
-                                      </div>
-                                    )}
-                                  </ThemeProvider>
-                                </Grid>
-
-                                <div className={classes.typeroot}>
-                                  <FormControl
-                                    component="fieldset"
-                                    className={classes.formControl}
-                                  >
-                                    <Grid
-                                      container
-                                      style={{ paddingLeft: "1rem" }}
-                                    >
-                                      {Object.keys(category).map((cat) => (
-                                        <Grid item xs={6}>
-                                          <FormControlLabel
-                                            control={
-                                              <Checkbox
-                                                checked={category[cat]}
-                                                onChange={handleCategoryChange}
-                                                name={cat}
-                                              />
-                                            }
-                                            style={{
-                                              textTransform: "capitalize",
-                                            }}
-                                            label={cat}
-                                          />
-                                        </Grid>
-                                      ))}
-                                    </Grid>
-                                  </FormControl>
-                                </div>
-
-                                <Grid item xs={12} sm={12}>
-                                  <ThemeProvider theme={rawTheme}>
-                                    <TextField
-                                      fullWidth
-                                      required
-                                      multiline
-                                      autoComplete="off"
-                                      variant="outlined"
-                                      rows={4}
-                                      rowsMax={15}
-                                      id="description"
-                                      name="description"
-                                      label="Product Description"
-                                      defaultValue=""
-                                      style={{ marginTop: "1rem" }}
-                                      value={formData.description}
-                                      onChange={handleChange}
-                                    />
-                                  </ThemeProvider>
-                                </Grid>
-                              </Grid>
-                            </form>
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                          <Grid
-                            item
-                            xs={12}
-                            style={{ flexDirection: "column" }}
-                            className={classes.alignCenter}
-                          >
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              className={classes.button}
-                              onClick={() => productdetails()}
-                              disabled={
-                                !formData.title ||
-                                !formData.price ||
-                                !formData.companyName ||
-                                !formData.color ||
-                                !Object.values(type).some(
-                                  (val) => val == true
-                                ) ||
-                                !formData.description
-                              }
-                            >
-                              Submit
-                            </Button>
-                            {showerror ? (
-                              <div style={{ color: "red", marginTop: "1rem" }}>
-                                {errormsg}
-                              </div>
-                            ) : (
-                              ""
-                            )}
-                          </Grid>
-                        </DialogActions>
-                      </Dialog>
                     </Grid>
                   </Grid>
                 </CardActions>
@@ -775,19 +427,337 @@ function ProductsCardbyadmin(props) {
           ))
         )}
       </Grid>
-      {/* {productslist.length ? (
-        <div
-          style={{ width: "50%", margin: "auto", marginBottom: "30vh" }}
-          className={classes.pagination}
-        >
-          <Pagination
-            count={Math.ceil(productslist.length / 8)}
+
+      {/* delete dialog */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperComponent={PaperComponent}
+        // aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+          Delete Product
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this product?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleNo} color="primary">
+            No
+          </Button>
+          <Button
+            onClick={() => {
+              // debugger;
+              handleYes(deleteproductid);
+            }}
             color="primary"
-          />
-        </div>
-      ) : (
-        ""
-      )} */}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* edit dialog */}
+      <Dialog
+        open={editOpen}
+        onClose={handleeditClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          <Grid item xs={12}>
+            <div
+              style={{ textAlign: "center", fontSize: "2rem" }}
+              className="loginheading"
+            >
+              Edit Product
+            </div>
+          </Grid>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <form>
+              <Grid
+                container
+                spacing={2}
+                justify="center"
+                alignItems="center"
+                className={classes.container}
+              >
+                <Grid item xs={12} sm={6}>
+                  <ThemeProvider theme={rawTheme}>
+                    <TextField
+                      fullWidth
+                      // autoComplete="off"
+                      required
+                      variant="outlined"
+                      id="title"
+                      name="title"
+                      label="Title"
+                      defaultValue=""
+                      value={formData.title}
+                      onChange={handleChange}
+                    />
+                  </ThemeProvider>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <ThemeProvider theme={rawTheme}>
+                    <TextField
+                      fullWidth
+                      required
+                      // autoComplete="off"
+                      variant="outlined"
+                      type="Number"
+                      id="price"
+                      name="price"
+                      label="Price"
+                      defaultValue=""
+                      value={formData.price}
+                      onChange={handleChange}
+                    />
+                  </ThemeProvider>
+                </Grid>
+
+                <Grid item xs={12} sm={12}>
+                  <ThemeProvider theme={rawTheme}>
+                    <TextField
+                      fullWidth
+                      required
+                      // autoComplete="off"
+                      variant="outlined"
+                      id="companyName"
+                      name="companyName"
+                      label="Company Name"
+                      defaultValue=""
+                      value={formData.companyName}
+                      onChange={handleChange}
+                    />
+                  </ThemeProvider>
+                </Grid>
+
+                <Grid item xs={12} sm={12}>
+                  <ThemeProvider theme={rawTheme}>
+                    <TextField
+                      fullWidth
+                      required
+                      // autoComplete="off"
+                      variant="outlined"
+                      type="File"
+                      id="imageUrl"
+                      name="imageUrl"
+                      // placeholder="Product image"
+                      defaultValue=""
+                      // value={file}
+                      onChange={handleFile}
+                      ref={inputFile}
+                    />
+                  </ThemeProvider>
+                </Grid>
+
+                <Grid item xs={12} sm={12}>
+                  <ThemeProvider theme={rawTheme}>
+                    <TextField
+                      fullWidth
+                      required
+                      // autoComplete="off"
+                      variant="outlined"
+                      type="color"
+                      id="color"
+                      name="color"
+                      label="Product Color"
+                      //   defaultValue=""
+                      value={formData.color}
+                      onChange={handleChange}
+                    />
+                  </ThemeProvider>
+                </Grid>
+
+                <Grid style={{ position: "relative" }} item xs={12} sm={12}>
+                  <ThemeProvider
+                    style={{ position: "relative" }}
+                    theme={rawTheme}
+                  >
+                    {Object.values(type).some((val) => val == true) ? (
+                      <div component="ul" className={classes.chiproot}>
+                        {Object.keys(type).map((ty) => (
+                          <li>
+                            {type[ty] ? (
+                              <Chip
+                                className={classes.chip}
+                                onDelete={() => typehandleDelete(ty)}
+                                style={{
+                                  textTransform: "capitalize",
+                                }}
+                                label={ty}
+                              />
+                            ) : (
+                              ""
+                            )}
+                          </li>
+                        ))}
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          color: "black",
+                          marginTop: "1rem",
+                        }}
+                      >
+                        Select type of your product*
+                      </div>
+                    )}
+                  </ThemeProvider>
+                </Grid>
+
+                <div className={classes.typeroot}>
+                  <FormControl
+                    component="fieldset"
+                    className={classes.formControl}
+                  >
+                    <Grid container style={{ paddingLeft: "1rem" }}>
+                      {Object.keys(type).map((ty) => (
+                        <Grid item xs={6} sm={4}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={type[ty]}
+                                onChange={handleTypeChange}
+                                name={ty}
+                              />
+                            }
+                            style={{
+                              textTransform: "capitalize",
+                            }}
+                            label={ty}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </FormControl>
+                </div>
+
+                <Grid style={{ position: "relative" }} item xs={12} sm={12}>
+                  <ThemeProvider
+                    style={{ position: "relative" }}
+                    theme={rawTheme}
+                  >
+                    {Object.values(category).some((val) => val == true) ? (
+                      <div component="ul" className={classes.chiproot}>
+                        {Object.keys(category).map((cat) => (
+                          <li>
+                            {category[cat] ? (
+                              <Chip
+                                className={classes.chip}
+                                onDelete={() => categoryhandleDelete(cat)}
+                                style={{
+                                  textTransform: "capitalize",
+                                }}
+                                label={cat}
+                              />
+                            ) : (
+                              ""
+                            )}
+                          </li>
+                        ))}
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          color: "black",
+                          marginTop: "1rem",
+                        }}
+                      >
+                        Select category of your product
+                      </div>
+                    )}
+                  </ThemeProvider>
+                </Grid>
+
+                <div className={classes.typeroot}>
+                  <FormControl
+                    component="fieldset"
+                    className={classes.formControl}
+                  >
+                    <Grid container style={{ paddingLeft: "1rem" }}>
+                      {Object.keys(category).map((cat) => (
+                        <Grid item xs={6}>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={category[cat]}
+                                onChange={handleCategoryChange}
+                                name={cat}
+                              />
+                            }
+                            style={{
+                              textTransform: "capitalize",
+                            }}
+                            label={cat}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </FormControl>
+                </div>
+
+                <Grid item xs={12} sm={12}>
+                  <ThemeProvider theme={rawTheme}>
+                    <TextField
+                      fullWidth
+                      required
+                      multiline
+                      // autoComplete="off"
+                      variant="outlined"
+                      rows={4}
+                      rowsMax={15}
+                      id="description"
+                      name="description"
+                      label="Product Description"
+                      defaultValue=""
+                      style={{ marginTop: "1rem" }}
+                      value={formData.description}
+                      onChange={handleChange}
+                    />
+                  </ThemeProvider>
+                </Grid>
+              </Grid>
+            </form>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Grid
+            item
+            xs={12}
+            style={{ flexDirection: "column" }}
+            className={classes.alignCenter}
+          >
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              onClick={() => productdetails()}
+              disabled={
+                !formData.title ||
+                !formData.price ||
+                !formData.companyName ||
+                !formData.color ||
+                !Object.values(type).some((val) => val == true) ||
+                !formData.description
+              }
+            >
+              Submit
+            </Button>
+            {showerror ? (
+              <div style={{ color: "red", marginTop: "1rem" }}>{errormsg}</div>
+            ) : (
+              ""
+            )}
+          </Grid>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

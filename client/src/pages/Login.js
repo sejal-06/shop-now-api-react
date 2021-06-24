@@ -6,7 +6,6 @@ import { Grid, TextField, Typography, Button, Paper } from "@material-ui/core";
 import theme from "../components/theme";
 import axios from "axios";
 
-import NavbarHalf from "../components/NavbarHalf";
 import "./Login.css";
 
 const rawTheme = createMuiTheme({
@@ -89,10 +88,13 @@ function Login() {
     try {
       seterrormsg("");
       setshowerror("");
-      const loginres = await axios.post(`http://localhost:5000/auth/login`, {
-        email: formData.email,
-        password: formData.password,
-      });
+      const loginres = await axios.post(
+        `http://192.168.43.76:5000/auth/login`,
+        {
+          email: formData.email,
+          password: formData.password,
+        }
+      );
       localStorage.setItem("token", loginres.data.token);
       window.location.href = "/shop";
     } catch (err) {
@@ -124,8 +126,8 @@ function Login() {
             <Grid item xs={12} sm={12}>
               <ThemeProvider theme={rawTheme}>
                 <TextField
+                  className="textfield"
                   fullWidth
-                  autoComplete="off"
                   required
                   variant="outlined"
                   id="email"
@@ -142,7 +144,6 @@ function Login() {
                 <TextField
                   fullWidth
                   required
-                  autoComplete="off"
                   variant="outlined"
                   type="password"
                   id="password"
@@ -168,6 +169,7 @@ function Login() {
             </Grid>
           </Grid>
         </form>
+
         <center>
           <a className="resetpass" href="/resetpassword">
             <div className="forgotpassword">Forgot Password?</div>

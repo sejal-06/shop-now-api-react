@@ -25,11 +25,9 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0.5),
     },
   },
-  backforimg: {
-    [theme.breakpoints.down("sm")]: {
-      background: "black",
-    },
-  },
+  // backforimg: {
+  //   [theme.breakpoints.down("sm")]: {},
+  // },
   topContainer: {
     marginTop: "8vh",
     padding: "1vw",
@@ -55,7 +53,7 @@ function ProductsCard(props) {
     const tokenStr = localStorage.getItem("token");
 
     const wishlistedproducts = await axios.get(
-      `http://localhost:5000/shop/allproductsofwishlist`,
+      `http://192.168.43.76:5000/shop/allproductsofwishlist`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     setwishlistidarray(wishlistedproducts.data.wishlist);
@@ -63,7 +61,7 @@ function ProductsCard(props) {
 
   useEffect(async () => {
     const firstpageprodsjson = await axios.get(
-      `http://localhost:5000/shop/allproducts/1`
+      `http://192.168.43.76:5000/shop/allproducts/1`
     );
     setproductslist(firstpageprodsjson.data.products);
   }, []);
@@ -72,7 +70,7 @@ function ProductsCard(props) {
     const tokenStr = localStorage.getItem("token");
 
     const product = await axios.get(
-      `http://localhost:5000/shop/addtocart/${val}/1`,
+      `http://192.168.43.76:5000/shop/addtocart/${val}/1`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
   };
@@ -81,7 +79,7 @@ function ProductsCard(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://localhost:5000/shop/addtowishlist/${val}`,
+        `http://192.168.43.76:5000/shop/addtowishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -95,7 +93,7 @@ function ProductsCard(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://localhost:5000/shop/deletefromwishlist/${val}`,
+        `http://192.168.43.76:5000/shop/deletefromwishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -109,7 +107,7 @@ function ProductsCard(props) {
     setpageno(value);
 
     const productslistjson = await axios.get(
-      `http://localhost:5000/shop/allproducts/${value}`
+      `http://192.168.43.76:5000/shop/allproducts/${value}`
     );
     setproductslist(productslistjson.data.products);
   };
@@ -131,7 +129,7 @@ function ProductsCard(props) {
               <Card className={classes.root}>
                 <CardActionArea>
                   <a href={"/product/" + product._id}>
-                    <div className={classes.backforimg}>
+                    <div className="imagediv">
                       <CardMedia
                         className={classes.media}
                         image={product.imageUrl}
@@ -203,26 +201,30 @@ function ProductsCard(props) {
         )}
       </Grid>
 
-      <div
-        style={{
-          background: "linear-gradient(90deg,#0000008c,#ffffffc4,#0000008c)",
-          position: "sticky",
-          bottom: "0",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: "1vh",
-        }}
-      >
-        <Pagination
-          className={classes.pagination}
-          size="large"
-          onChange={handleChange}
-          count={Math.ceil(count / 12)}
-          color="primary"
-          page={pageno}
-        />
-      </div>
+      {productslist.length != 0 ? (
+        <div
+          style={{
+            background: "linear-gradient(90deg,#0000008c,#ffffffc4,#0000008c)",
+            position: "sticky",
+            bottom: "0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "1vh",
+          }}
+        >
+          <Pagination
+            className={classes.pagination}
+            size="large"
+            onChange={handleChange}
+            count={Math.ceil(count / 12)}
+            color="primary"
+            page={pageno}
+          />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

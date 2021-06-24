@@ -17,7 +17,7 @@ app.use("/auth", authRoutes);
 app.use("/shop", shopRoutes);
 app.use("/admin", adminRoutes);
 
-const MONGODB_URI = `mongodb+srv://Sejal:mongodb123@cluster0.lxs3r.mongodb.net/shop`;
+const MONGODB_URI = `${process.env.MONGO_URL}`;
 
 mongoose
   .connect(MONGODB_URI)

@@ -8,7 +8,7 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import axios from "axios";
-import NavbarFull from "../components/NavbarFull";
+// import NavbarFull from "../components/NavbarFull";
 
 import "./Product.css";
 
@@ -26,29 +26,32 @@ function Product() {
 
   const classes = useStyles();
 
-  useEffect(async () => {
-    const tokenStr = localStorage.getItem("token");
-    const wishlistedproducts = await axios.get(
-      `http://localhost:5000/shop/allproductsofwishlist`,
-      { headers: { Authorization: `Bearer ${tokenStr}` } }
-    );
+  useEffect(
+    async () => {
+      const tokenStr = localStorage.getItem("token");
+      const wishlistedproducts = await axios.get(
+        `http://192.168.43.76:5000/shop/allproductsofwishlist`,
+        { headers: { Authorization: `Bearer ${tokenStr}` } }
+      );
 
-    setwishlistidarray(wishlistedproducts.data.wishlist);
-  });
+      setwishlistidarray(wishlistedproducts.data.wishlist);
+    }
+    // [JSON.stringify(wishlistidarray)]
+  );
 
   useEffect(async () => {
     const productjson = await axios.get(
-      `http://localhost:5000/shop/product/${id}`
+      `http://192.168.43.76:5000/shop/product/${id}`
     );
     // console.log()
     setproduct(productjson.data.product);
-    console.log(product);
+    // console.log(product);
   }, []);
 
   const addtocart = async (val, count) => {
     const tokenStr = localStorage.getItem("token");
     const product = await axios.get(
-      `http://localhost:5000/shop/addtocart/${val}/${count}`,
+      `http://192.168.43.76:5000/shop/addtocart/${val}/${count}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);
@@ -58,23 +61,25 @@ function Product() {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://localhost:5000/shop/addtowishlist/${val}`,
+        `http://192.168.43.76:5000/shop/addtowishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
+      // const newarr = [...wishlistidarray.push(val)];
+      // setwishlistidarray(newarr);
     } catch (err) {
       console.log(err);
       window.location.href = "/wishlist";
     }
-    // console.log(product.data);
   };
 
   const removefromwishlist = async (val) => {
     const tokenStr = localStorage.getItem("token");
     const product = await axios.get(
-      `http://localhost:5000/shop/deletefromwishlist/${val}`,
+      `http://192.168.43.76:5000/shop/deletefromwishlist/${val}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
-    // console.log(product.data);
+    // const newarr = wishlistidarray.filter((id) => id != val);
+    // setwishlistidarray(newarr);
   };
 
   return (

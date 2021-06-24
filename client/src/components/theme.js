@@ -2,7 +2,8 @@ import { createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: "'Roboto Condensed', cursive",
+    fontFamily: "'Chilanka', cursive",
+
     h3: {
       fontSize: "2.7rem",
       "@media (max-width:600px)": {

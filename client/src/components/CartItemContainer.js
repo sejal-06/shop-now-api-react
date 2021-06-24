@@ -53,7 +53,7 @@ function CartItemCards(props) {
 
   const removefromcart = async (val) => {
     const tokenStr = localStorage.getItem("token");
-    await axios.get(`http://localhost:5000/shop/deletefromcart/${val}`, {
+    await axios.get(`http://192.168.43.76:5000/shop/deletefromcart/${val}`, {
       headers: { Authorization: `Bearer ${tokenStr}` },
     });
 
@@ -78,7 +78,7 @@ function CartItemCards(props) {
     var countval = productarr[index].quantity + 1;
     const tokenStr = localStorage.getItem("token");
     await axios.get(
-      `http://localhost:5000/shop/changequantityofcartto/${id}/${countval}`,
+      `http://192.168.43.76:5000/shop/changequantityofcartto/${id}/${countval}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
 
@@ -95,7 +95,7 @@ function CartItemCards(props) {
     var countval = productarr[index].quantity - 1;
     const tokenStr = localStorage.getItem("token");
     await axios.get(
-      `http://localhost:5000/shop/changequantityofcartto/${id}/${countval}`,
+      `http://192.168.43.76:5000/shop/changequantityofcartto/${id}/${countval}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
 
@@ -113,7 +113,7 @@ function CartItemCards(props) {
     var cartproducts = props.cartproducts;
     for (var product of cartproducts) {
       var productbyid = await axios.get(
-        `http://localhost:5000/shop/product/${product.productId}`,
+        `http://192.168.43.76:5000/shop/product/${product.productId}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
 
@@ -136,7 +136,12 @@ function CartItemCards(props) {
         <Grid item xs={12} md={8}>
           {productarr.map((product, index) => (
             <Paper
-              style={{ height: "175px", overflow: "hidden", margin: "1rem" }}
+              style={{
+                height: "175px",
+                overflow: "hidden",
+                //  margin: "1rem"
+                margin: "0.5rem",
+              }}
             >
               <Grid style={{ height: "100%" }} container>
                 <Grid
@@ -225,7 +230,7 @@ function CartItemCards(props) {
             style={{
               position: "sticky",
               top: "5rem",
-              margin: "1rem",
+              margin: "0.5rem",
               padding: "10px",
               textTransform: "capitalize",
             }}

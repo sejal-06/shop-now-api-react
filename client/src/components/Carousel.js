@@ -64,7 +64,7 @@ function Carousel() {
   const categories = category;
 
   const handlecategory = (category) => {
-    console.log(category);
+    // console.log(category);
     window.location.href = `/productsbycategory/${category}`;
   };
 

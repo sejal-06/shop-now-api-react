@@ -1,10 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Skranji&family=Staatliches&display=swap");
 .date {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-family: "Kaushan Script", cursive;
   color: #ffffffba;
 }
 .orderprice {
   font-family: "Staatliches", cursive;
   font-size: 1.25rem;
+}
+.invoice {
+  font-size: 1.25rem;
+  font-family: "Kaushan Script", cursive;
+}
+
+.total {
+  font-family: "Staatliches", cursive;
+  font-size: 1.5rem;
 }

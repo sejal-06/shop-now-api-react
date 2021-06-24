@@ -255,36 +255,21 @@ exports.deleteProduct = async (req, res, next) => {
     //remove from cart and wishlist as well
     const users = await User.find();
     for (var i = 0; i < users.length; i++) {
-      var productindex = -1;
-      users[i].cart.forEach((item, index) => {
-        if (item.productId == productId) {
-          productindex = index;
-        }
+      var newcart = [],
+        newwishlist = [];
+
+      newcart = users[i].cart.filter((item, index) => {
+        return item.productId != productId;
+      });
+      newwishlist = users[i].wishlist.filter((item, index) => {
+        return item.productId != productId;
       });
 
-      if (productindex != -1) {
-        var newcart = users[i].cart.filter((item, index) => {
-          return index !== productindex;
-        });
-      }
-
-      var productindex = -1;
-      users[i].wishlist.forEach((item, index) => {
-        if (item.productId == productId) {
-          productindex = index;
-        }
-      });
-
-      if (productindex != -1) {
-        var newwishlist = users[i].wishlist.filter((item, index) => {
-          return index !== productindex;
-        });
-        const newuser = await User.findOneAndUpdate(
-          { _id: users[i]._id },
-          { wishlist: newwishlist, cart: newcart },
-          { new: true }
-        );
-      }
+      const newuser = await User.findOneAndUpdate(
+        { _id: users[i]._id },
+        { wishlist: newwishlist, cart: newcart },
+        { new: true }
+      );
     }
 
     return res.status(200).json({ status: true, msg: "Product deleted" });

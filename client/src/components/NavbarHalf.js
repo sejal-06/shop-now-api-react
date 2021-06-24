@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -20,7 +20,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 function NavbarHalf() {
   const classes = useStyles();
-
+  const [tab, settab] = useState("");
+  useEffect(() => {
+    settab(window.location.pathname);
+  }, []);
   return (
     <div className={classes.root}>
       <AppBar style={{ background: "black" }} position="fixed">
@@ -28,21 +31,67 @@ function NavbarHalf() {
           <img width="47px" src="shopnow-logo.png" alt="" />
           <Grid container justify="space-between">
             <Grid item>
-              <Button href="/shop" style={{ color: "white" }}>
-                Shop
-              </Button>
-              <Button href="/products" style={{ color: "white" }}>
-                Products
-              </Button>
+              {tab == "/shop" ? (
+                <Button
+                  href="/shop"
+                  style={{
+                    margin: "0px 6px",
+                    boxShadow: "#f5f5f5ad 0 1px",
+                    color: "white",
+                  }}
+                >
+                  Shop
+                </Button>
+              ) : (
+                <Button
+                  href="/shop"
+                  style={{ margin: "0px 6px", color: "white" }}
+                >
+                  Shop
+                </Button>
+              )}
+              {tab == "/products" ? (
+                <Button
+                  href="/products"
+                  style={{
+                    margin: "0px 6px",
+                    boxShadow: "#f5f5f5ad 0 1px",
+                    color: "white",
+                  }}
+                >
+                  Products
+                </Button>
+              ) : (
+                <Button
+                  href="/products"
+                  style={{ margin: "0px 6px", color: "white" }}
+                >
+                  Products
+                </Button>
+              )}
+
               {/* <Button style={{ color: "white" }}>Cart</Button>
               <Button style={{ color: "white" }}>Orders</Button>
               <Button style={{ color: "white" }}>Add Products</Button>
               <Button style={{ color: "white" }}>Admin Products</Button> */}
             </Grid>
             <Grid item>
-              <Button href="/login" style={{ color: "white" }}>
-                Login / SignUp
-              </Button>
+              {tab == "/login" || tab == "/signup" ? (
+                <Button
+                  href="/login"
+                  style={{
+                    margin: "0px 6px",
+                    boxShadow: "#f5f5f5ad 0 1px",
+                    color: "white",
+                  }}
+                >
+                  Login / SignUp
+                </Button>
+              ) : (
+                <Button href="/login" style={{ color: "white" }}>
+                  Login / SignUp
+                </Button>
+              )}
             </Grid>
           </Grid>
         </Toolbar>

@@ -11,7 +11,7 @@ function Productbycategory() {
 
   useEffect(async () => {
     const productslist = await axios.get(
-      `http://localhost:5000/shop/allproductsbycategory/${category}`
+      `http://192.168.43.76:5000/shop/allproductsbycategory/${category}`
     );
     setproducts(productslist.data.products);
   }, []);

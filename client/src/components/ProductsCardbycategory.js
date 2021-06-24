@@ -46,7 +46,7 @@ function ProductsCardbycategory(props) {
   useEffect(async () => {
     const tokenStr = localStorage.getItem("token");
     const wishlistedproducts = await axios.get(
-      `http://localhost:5000/shop/allproductsofwishlist`,
+      `http://192.168.43.76:5000/shop/allproductsofwishlist`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     setwishlistidarray(wishlistedproducts.data.wishlist);
@@ -56,7 +56,7 @@ function ProductsCardbycategory(props) {
     const tokenStr = localStorage.getItem("token");
 
     const product = await axios.get(
-      `http://localhost:5000/shop/addtocart/${val}/1`,
+      `http://192.168.43.76:5000/shop/addtocart/${val}/1`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);
@@ -66,7 +66,7 @@ function ProductsCardbycategory(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://localhost:5000/shop/addtowishlist/${val}`,
+        `http://192.168.43.76:5000/shop/addtowishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -80,7 +80,7 @@ function ProductsCardbycategory(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://localhost:5000/shop/deletefromwishlist/${val}`,
+        `http://192.168.43.76:5000/shop/deletefromwishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {

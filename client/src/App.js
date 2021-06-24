@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
+// import Invoice from "./pages/Invoice";
 import AdminProducts from "./pages/AdminProducts";
 import Product from "./pages/Product";
 import DeletedProduct from "./pages/DeletedProduct";
@@ -30,7 +31,7 @@ function App() {
   useEffect(async () => {
     try {
       const tokenStr = localStorage.getItem("token");
-      await axios.get(`http://localhost:5000/auth/isauth`, {
+      await axios.get(`http://192.168.43.76:5000/auth/isauth`, {
         headers: { Authorization: `Bearer ${tokenStr}` },
       });
       setisauth(true);
@@ -60,22 +61,6 @@ function App() {
               </h1>
             )}
           </Route>
-
-          {/* <Route exact path="/addproduct">
-            {isauth ? (
-              <AddProducts />
-            ) : (
-              <h1
-                style={{
-                  marginLeft: "1rem",
-                  marginTop: "10vh",
-                  color: "#f5f5f58f",
-                }}
-              >
-                Login to continue!!
-              </h1>
-            )}
-          </Route> */}
 
           <Route exact path="/signup">
             {!isauth ? (
@@ -172,7 +157,9 @@ function App() {
               </h1>
             )}
           </Route>
-
+          {/* <Route path="/invoice/:id">
+            <Invoice />
+          </Route> */}
           <Route exact path="/adminproducts">
             {isauth ? (
               <AdminProducts />

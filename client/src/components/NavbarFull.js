@@ -9,11 +9,22 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
+import Hidden from "@material-ui/core/Hidden";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { Grid, TextField, Button, Paper } from "@material-ui/core";
+import {
+  Grid,
+  TextField,
+  Button,
+  Paper,
+  List,
+  SwipeableDrawer,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
 import Badge from "@material-ui/core/Badge";
 import Chip from "@material-ui/core/Chip";
 import { withStyles } from "@material-ui/core/styles";
@@ -51,6 +62,12 @@ const useStyles = makeStyles((theme) => ({
   typeroot: {
     display: "flex",
   },
+  swipe: {
+    "&>.MuiDrawer-paperAnchorRight": {
+      background: "#030303db",
+      color: "whitesmoke",
+    },
+  },
   chiproot: {
     marginTop: "1rem",
     minHeight: "32px",
@@ -77,17 +94,6 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  // container: {
-  //   margin: "auto",
-  //   marginTop: "80px",
-  //   width: "40%",
-  //   [theme.breakpoints.down("sm")]: {
-  //     width: "60% !important",
-  //   },
-  //   [theme.breakpoints.down("xs")]: {
-  //     width: "90% !important",
-  //   },
-  // },
 
   text: {
     textAlign: "center",
@@ -108,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
 function NavbarFull() {
   const classes = useStyles();
   const [cartcount, setcartcount] = useState();
-
+  const [tab, settab] = useState();
   const [open, setOpen] = React.useState(false);
 
   let [formData, setFormData] = useState({
@@ -156,6 +162,18 @@ function NavbarFull() {
 
   const [showerror, setshowerror] = useState(false);
   const [errormsg, seterrormsg] = useState("");
+  let [menuopen, setmenuopen] = useState(false);
+
+  function toggleDrawer() {
+    setmenuopen(!menuopen);
+  }
+  const menuItemList = [
+    ["Admin Products", "/adminproducts"],
+    ["Wishlist", "/wishlist"],
+    ["Cart", "/cart"],
+    ["Orders", "/orders"],
+    ["Logout", "/logout"],
+  ];
 
   const handleCategoryChange = (event) => {
     setcategory({ ...category, [event.target.name]: event.target.checked });
@@ -191,8 +209,8 @@ function NavbarFull() {
           categoryarr.push(j);
         }
       }
-      console.log(typearr);
-      console.log(categoryarr);
+      // console.log(typearr);
+      // console.log(categoryarr);
       const formdata = new FormData();
 
       formdata.append("title", formData.title);
@@ -205,14 +223,14 @@ function NavbarFull() {
       formdata.append("description", formData.description);
 
       const tokenStr = localStorage.getItem("token");
-      await axios.post(`http://localhost:5000/admin/addproduct`, formdata, {
+      await axios.post(`http://192.168.43.76:5000/admin/addproduct`, formdata, {
         headers: { Authorization: `Bearer ${tokenStr}` },
       });
 
       handleClose();
       window.location.href = "/adminproducts";
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       if (err.response) {
         seterrormsg(err.response.data.error);
         setshowerror(true);
@@ -228,19 +246,34 @@ function NavbarFull() {
     setOpen(false);
   };
 
-  const handleDelete = (data) => {
+  const typehandleDelete = (data) => {
+    // console.log(data);
     Object.keys(type).forEach((key) => {
       if (key == data) {
         type[key] = false;
+        const newtype = { ...type };
+        settype(newtype);
+      }
+    });
+  };
+
+  const categoryhandleDelete = (data) => {
+    // console.log(data);
+    Object.keys(category).forEach((key) => {
+      if (key == data) {
+        category[key] = false;
+        const newcategory = { ...category };
+        setcategory(newcategory);
       }
     });
   };
 
   useEffect(async () => {
+    settab(window.location.pathname);
     // setInterval(async () => {
     const tokenStr = localStorage.getItem("token");
     const cartres = await axios.get(
-      "http://localhost:5000/shop/allproductsofcart",
+      "http://192.168.43.76:5000/shop/allproductsofcart",
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     const prodarr = cartres.data.cart;
@@ -255,21 +288,77 @@ function NavbarFull() {
           <img width="47px" src="shopnow-logo.png" alt="" />
           <Grid container justify="space-between" alignItems="center">
             <Grid item>
-              <Button href="/shop" style={{ color: "white" }}>
-                Shop
-              </Button>
-              <Button href="/products" style={{ color: "white" }}>
-                Products
-              </Button>
+              {tab == "/shop" ? (
+                <Button
+                  style={{
+                    margin: "0px 6px",
+                    marginRight: "10px",
+                    boxShadow: "#f5f5f5ad 0 1px",
+                    color: "white",
+                  }}
+                  href="/shop"
+                >
+                  Shop
+                </Button>
+              ) : (
+                <Button
+                  href="/shop"
+                  style={{ margin: "0px 6px", color: "white" }}
+                >
+                  Shop
+                </Button>
+              )}
+              {tab == "/products" ? (
+                <Button
+                  href="/products"
+                  style={{
+                    margin: "0px 6px",
+                    boxShadow: "#f5f5f5ad 0 1px",
+                    color: "white",
+                  }}
+                >
+                  Products
+                </Button>
+              ) : (
+                <Button
+                  href="/products"
+                  style={{ margin: "0px 6px", color: "white" }}
+                >
+                  Products
+                </Button>
+              )}
 
-              <Button href="/orders" style={{ color: "white" }}>
-                Orders
-              </Button>
+              <Hidden smDown>
+                {tab == "/orders" ? (
+                  <Button
+                    href="/orders"
+                    style={{
+                      margin: "0px 6px",
+                      boxShadow: "#f5f5f5ad 0 1px",
+                      color: "white",
+                    }}
+                  >
+                    Orders
+                  </Button>
+                ) : (
+                  <Button
+                    href="/orders"
+                    style={{ margin: "0px 6px", color: "white" }}
+                  >
+                    Orders
+                  </Button>
+                )}
+              </Hidden>
 
               <>
-                <Button style={{ color: "white" }} onClick={handleClickOpen}>
-                  Add Products
-                </Button>
+                <Hidden smDown>
+                  <Button
+                    style={{ margin: "0px 6px", color: "white" }}
+                    onClick={handleClickOpen}
+                  >
+                    Add Products
+                  </Button>
+                </Hidden>
 
                 <Dialog
                   open={open}
@@ -301,7 +390,7 @@ function NavbarFull() {
                             <ThemeProvider theme={rawTheme}>
                               <TextField
                                 fullWidth
-                                autoComplete="off"
+                                // autoComplete="on"
                                 required
                                 variant="outlined"
                                 id="title"
@@ -319,7 +408,7 @@ function NavbarFull() {
                               <TextField
                                 fullWidth
                                 required
-                                autoComplete="off"
+                                // autoComplete="off"
                                 variant="outlined"
                                 type="Number"
                                 id="price"
@@ -337,7 +426,7 @@ function NavbarFull() {
                               <TextField
                                 fullWidth
                                 required
-                                autoComplete="off"
+                                // autoComplete="off"
                                 variant="outlined"
                                 id="companyName"
                                 name="companyName"
@@ -354,7 +443,7 @@ function NavbarFull() {
                               <TextField
                                 fullWidth
                                 required
-                                autoComplete="off"
+                                // autoComplete="off"
                                 variant="outlined"
                                 type="File"
                                 id="imageUrl"
@@ -373,7 +462,7 @@ function NavbarFull() {
                               <TextField
                                 fullWidth
                                 required
-                                autoComplete="off"
+                                // autoComplete="off"
                                 variant="outlined"
                                 type="color"
                                 id="color"
@@ -408,7 +497,9 @@ function NavbarFull() {
                                       {type[ty] ? (
                                         <Chip
                                           className={classes.chip}
-                                          // onDelete={handleDelete(men)}
+                                          onDelete={() => {
+                                            typehandleDelete(ty);
+                                          }}
                                           style={{
                                             textTransform: "capitalize",
                                           }}
@@ -482,7 +573,9 @@ function NavbarFull() {
                                       {category[cat] ? (
                                         <Chip
                                           className={classes.chip}
-                                          // onDelete={handleDelete(men)}
+                                          onDelete={() => {
+                                            categoryhandleDelete(cat);
+                                          }}
                                           style={{
                                             textTransform: "capitalize",
                                           }}
@@ -540,7 +633,7 @@ function NavbarFull() {
                                 fullWidth
                                 required
                                 multiline
-                                autoComplete="off"
+                                // autoComplete="off"
                                 variant="outlined"
                                 rows={4}
                                 rowsMax={15}
@@ -595,38 +688,149 @@ function NavbarFull() {
                   </DialogActions>
                 </Dialog>
               </>
+              <Hidden smDown>
+                {tab == "/adminproducts" ? (
+                  <Button
+                    href="/adminproducts"
+                    style={{
+                      margin: "0px 6px",
+                      boxShadow: "#f5f5f5ad 0 1px",
+                      color: "white",
+                    }}
+                  >
+                    Admin Products
+                  </Button>
+                ) : (
+                  <Button
+                    href="/adminproducts"
+                    style={{ margin: "0px 6px", color: "white" }}
+                  >
+                    Admin Products
+                  </Button>
+                )}
 
-              <Button href="/adminproducts" style={{ color: "white" }}>
-                Admin Products
-              </Button>
-
-              <Button href="/wishlist" style={{ color: "white" }}>
-                {/* Cart */}
-
-                <FavoriteIcon
-                  className="hearticonnavbar"
-                  fontSize="large"
-                  style={{ color: "#f50057" }}
-                />
-              </Button>
-
-              <Button href="/cart" style={{ color: "white" }}>
-                {/* Cart */}
-
-                <IconButton aria-label="cart">
-                  <StyledBadge badgeContent={cartcount} color="secondary">
-                    <ShoppingCartIcon
+                {tab == "/wishlist" ? (
+                  <Button
+                    href="/wishlist"
+                    style={{
+                      margin: "0px 6px",
+                      boxShadow: "#f5f5f5ad 0 1px",
+                      color: "white",
+                    }}
+                  >
+                    <FavoriteIcon
+                      className="hearticonnavbar"
                       fontSize="large"
-                      style={{ color: "white" }}
+                      style={{ color: "#f50057" }}
                     />
-                  </StyledBadge>
-                </IconButton>
-              </Button>
+                  </Button>
+                ) : (
+                  <Button
+                    href="/wishlist"
+                    style={{ margin: "0px 6px", color: "white" }}
+                  >
+                    <FavoriteIcon
+                      className="hearticonnavbar"
+                      fontSize="large"
+                      style={{ color: "#f50057" }}
+                    />
+                  </Button>
+                )}
+
+                {tab == "/cart" ? (
+                  <Button href="/cart">
+                    <IconButton
+                      aria-label="cart"
+                      style={{
+                        margin: "0px 6px",
+                        boxShadow: "#f5f5f5ad 0 1px",
+                        color: "white",
+                      }}
+                    >
+                      <StyledBadge badgeContent={cartcount} color="secondary">
+                        <ShoppingCartIcon
+                          fontSize="large"
+                          style={{ color: "white" }}
+                        />
+                      </StyledBadge>
+                    </IconButton>
+                  </Button>
+                ) : (
+                  <Button
+                    href="/cart"
+                    style={{ margin: "0px 6px", color: "white" }}
+                  >
+                    <IconButton aria-label="cart">
+                      <StyledBadge badgeContent={cartcount} color="secondary">
+                        <ShoppingCartIcon
+                          fontSize="large"
+                          style={{ color: "white" }}
+                        />
+                      </StyledBadge>
+                    </IconButton>
+                  </Button>
+                )}
+              </Hidden>
             </Grid>
             <Grid item>
-              <Button href="/logout" style={{ color: "white" }}>
-                Logout
-              </Button>
+              <Hidden smDown>
+                {tab == "/logout" ? (
+                  <Button
+                    href="/logout"
+                    style={{ boxShadow: "#f5f5f5ad 0 1px", color: "white" }}
+                  >
+                    Logout
+                  </Button>
+                ) : (
+                  <Button href="/logout" style={{ color: "white" }}>
+                    Logout
+                  </Button>
+                )}
+              </Hidden>
+
+              <Hidden mdUp>
+                <IconButton
+                  style={{ color: "white" }}
+                  // color="primary"
+                  aria-label="menu"
+                  onClick={toggleDrawer}
+                >
+                  <MenuIcon />
+                </IconButton>
+
+                <SwipeableDrawer
+                  anchor="right"
+                  open={menuopen}
+                  onClose={toggleDrawer}
+                  onOpen={toggleDrawer}
+                  transitionDuration={300}
+                  className={classes.swipe}
+                >
+                  <List>
+                    <ListItem
+                      button
+                      key="Add Product"
+                      onClick={() => {
+                        handleClickOpen();
+                        toggleDrawer();
+                      }}
+                    >
+                      <ListItemText primary="Add Product" />
+                    </ListItem>
+                    {menuItemList.map((item) => (
+                      <ListItem
+                        button
+                        key={item[0]}
+                        onClick={() => {
+                          window.location.href = `${item[1]}`;
+                        }}
+                      >
+                        <ListItemText primary={item[0]} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </SwipeableDrawer>
+              </Hidden>
             </Grid>
           </Grid>
         </Toolbar>
