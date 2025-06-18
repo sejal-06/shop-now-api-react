@@ -86,7 +86,7 @@ exports.resetmail = async (req, res, next) => {
       service: "gmail",
       auth: {
         user: "shopnow1065@gmail.com",
-        pass: "shopnow@123",
+        pass: "gogh iipq ayfq upgq",
       },
     });
     let info = await transporter.sendMail({
@@ -190,7 +190,7 @@ exports.postSignup = async (req, res, next) => {
 
       auth: {
         user: "shopnow1065@gmail.com",
-        pass: "shopnow@123",
+        pass: "gogh iipq ayfq upgq",
       },
     });
     // console.log(shopnowlogo);
