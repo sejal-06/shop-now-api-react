@@ -42,21 +42,23 @@ function ProductsCardbycategory(props) {
   const productslist = props.products;
   const classes = useStyles();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(async () => {
-    const tokenStr = localStorage.getItem("token");
-    const wishlistedproducts = await axios.get(
-      `http://192.168.43.76:5000/shop/allproductsofwishlist`,
-      { headers: { Authorization: `Bearer ${tokenStr}` } }
-    );
-    setwishlistidarray(wishlistedproducts.data.wishlist);
-  });
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const tokenStr = localStorage.getItem("token");
+      const wishlistedproducts = await axios.get(
+        `${process.env.REACT_APP_API_URL}/shop/allproductsofwishlist`,
+        { headers: { Authorization: `Bearer ${tokenStr}` } }
+      );
+      setwishlistidarray(wishlistedproducts.data.wishlist);
+    };
+    fetchWishlist();
+  }, []); // Only run once on mount
 
   const addtocart = async (val) => {
     const tokenStr = localStorage.getItem("token");
 
     const product = await axios.get(
-      `http://192.168.43.76:5000/shop/addtocart/${val}/1`,
+      `${process.env.REACT_APP_API_URL}/shop/addtocart/${val}/1`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);
@@ -66,7 +68,7 @@ function ProductsCardbycategory(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.43.76:5000/shop/addtowishlist/${val}`,
+        `${process.env.REACT_APP_API_URL}/shop/addtowishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -80,7 +82,7 @@ function ProductsCardbycategory(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.43.76:5000/shop/deletefromwishlist/${val}`,
+        `${process.env.REACT_APP_API_URL}/shop/deletefromwishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {

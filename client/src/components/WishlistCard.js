@@ -44,30 +44,31 @@ function WishlistCard(props) {
   //   const productslist = props.products;
   const classes = useStyles();
 
-  useEffect(async () => {
-    const tokenStr = localStorage.getItem("token");
-    const wishlistedproductsres = await axios.get(
-      `http://192.168.43.76:5000/shop/allproductsofwishlist`,
-      { headers: { Authorization: `Bearer ${tokenStr}` } }
-    );
-    const wishlistedproducts = wishlistedproductsres.data.wishlist;
-    const newarr = [];
-    for (var i of wishlistedproducts) {
-      const productslist = await axios.get(
-        `http://192.168.43.76:5000/shop/product/${i.productId}`
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const tokenStr = localStorage.getItem("token");
+      const wishlistedproductsres = await axios.get(
+        `${process.env.REACT_APP_API_URL}/shop/allproductsofwishlist`,
+        { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
-      newarr.push(productslist.data.product);
-    }
-    // console.log(newarr);
-    setwishlistarray(newarr);
-    // console.log(wishlistarray);
-  });
+      const wishlistedproducts = wishlistedproductsres.data.wishlist;
+      const newarr = [];
+      for (var i of wishlistedproducts) {
+        const productslist = await axios.get(
+          `${process.env.REACT_APP_API_URL}/shop/product/${i.productId}`
+        );
+        newarr.push(productslist.data.product);
+      }
+      setwishlistarray(newarr);
+    };
+    fetchWishlist();
+  }, []); // Only run once on mount
 
   const addtocart = async (val) => {
     const tokenStr = localStorage.getItem("token");
 
     const product = await axios.get(
-      `http://192.168.43.76:5000/shop/addtocart/${val}/1`,
+      `${process.env.REACT_APP_API_URL}/shop/addtocart/${val}/1`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);
@@ -77,7 +78,7 @@ function WishlistCard(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.43.76:5000/shop/addtowishlist/${val}`,
+        `${process.env.REACT_APP_API_URL}/shop/addtowishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -91,7 +92,7 @@ function WishlistCard(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.43.76:5000/shop/deletefromwishlist/${val}`,
+        `${process.env.REACT_APP_API_URL}/shop/deletefromwishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {

@@ -14,7 +14,7 @@ function Invoice() {
     try {
       const tokenStr = localStorage.getItem("token");
       var orderjson = await axios.get(
-        `http://192.168.43.76:5000/shop/order/${index}`,
+        `${process.env.REACT_APP_API_URL}/shop/order/${index}`,
         {
           headers: { Authorization: `Bearer ${tokenStr}` },
         }
@@ -24,7 +24,7 @@ function Invoice() {
       const prodarr = [];
       for (var i = 0; i < order.length - 1; i++) {
         var productbyidjson = await axios.get(
-          `http://192.168.43.76:5000/shop/product/${order[i].productId}`,
+          `${process.env.REACT_APP_API_URL}/shop/product/${order[i].productId}`,
           { headers: { Authorization: `Bearer ${tokenStr}` } }
         );
         const productbyid = productbyidjson.data.product;

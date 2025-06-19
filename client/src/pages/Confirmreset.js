@@ -76,7 +76,7 @@ function Confirmreset() {
   async function handlesubmit() {
     try {
       await axios.post(
-        `http://192.168.43.76:5000/auth/changepass/${resettoken}`,
+        `${process.env.REACT_APP_API_URL}/auth/changepass/${resettoken}`,
         {
           password: formData.password,
           confirmPassword: formData.confirmPassword,

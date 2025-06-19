@@ -10,7 +10,7 @@ const { Storage } = require("@google-cloud/storage");
 
 const storage = new Storage({
   projectId: "shop-now-be2a5",
-  keyFilename: "../server/services/myPrivateKey.json",
+  keyFilename: "../server/services/myKey.json",
 });
 
 const bucket = storage.bucket("gs://shop-now-be2a5.appspot.com");

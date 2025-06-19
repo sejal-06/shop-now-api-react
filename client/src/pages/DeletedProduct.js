@@ -17,7 +17,7 @@ function DeletedProduct() {
 
   useEffect(async () => {
     const productjson = await axios.get(
-      `http://192.168.72.94:5000/admin/deletedproduct/${id}`
+      `${process.env.REACT_APP_API_URL}/admin/deletedproduct/${id}`
     );
     setproduct(productjson.data.product);
     // console.log(product);

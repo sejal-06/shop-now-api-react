@@ -223,7 +223,7 @@ function NavbarFull() {
       formdata.append("description", formData.description);
 
       const tokenStr = localStorage.getItem("token");
-      await axios.post(`http://192.168.43.76:5000/admin/addproduct`, formdata, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/admin/addproduct`, formdata, {
         headers: { Authorization: `Bearer ${tokenStr}` },
       });
 
@@ -273,7 +273,7 @@ function NavbarFull() {
     // setInterval(async () => {
     const tokenStr = localStorage.getItem("token");
     const cartres = await axios.get(
-      "http://192.168.43.76:5000/shop/allproductsofcart",
+      `${process.env.REACT_APP_API_URL}/shop/allproductsofcart`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     const prodarr = cartres.data.cart;

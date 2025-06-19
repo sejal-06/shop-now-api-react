@@ -27,7 +27,7 @@ class CheckoutForm extends React.Component {
       this.setState({ warning: "Do not refresh!!" });
       const tokenStr = localStorage.getItem("token");
       const order = await axios.post(
-        `http://192.168.43.76:5000/shop/placeorder`,
+        `${process.env.REACT_APP_API_URL}/shop/placeorder`,
         {
           amount: this.state.totalpriceofcart * 100,
           stripeToken: result.token.id,
@@ -46,7 +46,7 @@ class CheckoutForm extends React.Component {
   async componentDidMount() {
     const tokenStr = localStorage.getItem("token");
     const cart = await axios.get(
-      "http://192.168.43.76:5000/shop/allproductsofcart",
+      `${process.env.REACT_APP_API_URL}/shop/allproductsofcart`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     const cartarr = cart.data.cart;
@@ -54,7 +54,7 @@ class CheckoutForm extends React.Component {
     var total = 0;
     for (var i = 0; i < cartarr.length; i++) {
       const product = await axios.get(
-        `http://192.168.43.76:5000/shop/product/${cartarr[i].productId}`
+        `${process.env.REACT_APP_API_URL}/shop/product/${cartarr[i].productId}`
       );
 
       total += product.data.product.price * cartarr[i].quantity;

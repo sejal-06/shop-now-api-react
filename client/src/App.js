@@ -28,17 +28,20 @@ import theme from "./components/theme";
 function App() {
   const [isauth, setisauth] = useState(false);
 
-  useEffect(async () => {
-    try {
-      const tokenStr = localStorage.getItem("token");
-      await axios.get(`http://192.168.43.76:5000/auth/isauth`, {
-        headers: { Authorization: `Bearer ${tokenStr}` },
-      });
-      setisauth(true);
-    } catch (err) {
-      setisauth(false);
-    }
-  });
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const tokenStr = localStorage.getItem("token");
+        await axios.get(`${process.env.REACT_APP_API_URL}/auth/isauth`, {
+          headers: { Authorization: `Bearer ${tokenStr}` },
+        });
+        setisauth(true);
+      } catch (err) {
+        setisauth(false);
+      }
+    };
+    checkAuth();
+  }, []);
 
   return (
     <>

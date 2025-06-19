@@ -12,7 +12,7 @@ function AdminProducts() {
     const tokenStr = localStorage.getItem("token");
 
     const productslist = await axios.get(
-      "http://192.168.43.76:5000/admin/productsbyuser",
+      `${process.env.REACT_APP_API_URL}/admin/productsbyuser`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     setproducts(productslist.data.products);

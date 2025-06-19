@@ -26,32 +26,32 @@ function Product() {
 
   const classes = useStyles();
 
-  useEffect(
-    async () => {
+  useEffect(() => {
+    const fetchWishlist = async () => {
       const tokenStr = localStorage.getItem("token");
       const wishlistedproducts = await axios.get(
-        `http://192.168.43.76:5000/shop/allproductsofwishlist`,
+        `${process.env.REACT_APP_API_URL}/shop/allproductsofwishlist`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
-
       setwishlistidarray(wishlistedproducts.data.wishlist);
-    }
-    // [JSON.stringify(wishlistidarray)]
-  );
+    };
+    fetchWishlist();
+  }, []); // Only run once on mount
 
-  useEffect(async () => {
-    const productjson = await axios.get(
-      `http://192.168.43.76:5000/shop/product/${id}`
-    );
-    // console.log()
-    setproduct(productjson.data.product);
-    // console.log(product);
-  }, []);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const productjson = await axios.get(
+        `${process.env.REACT_APP_API_URL}/shop/product/${id}`
+      );
+      setproduct(productjson.data.product);
+    };
+    fetchProduct();
+  }, [id]); // Only run when id changes
 
   const addtocart = async (val, count) => {
     const tokenStr = localStorage.getItem("token");
     const product = await axios.get(
-      `http://192.168.43.76:5000/shop/addtocart/${val}/${count}`,
+      `${process.env.REACT_APP_API_URL}/shop/addtocart/${val}/${count}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // console.log(product.data);
@@ -61,7 +61,7 @@ function Product() {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.43.76:5000/shop/addtowishlist/${val}`,
+        `${process.env.REACT_APP_API_URL}/shop/addtowishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
       // const newarr = [...wishlistidarray.push(val)];
@@ -75,7 +75,7 @@ function Product() {
   const removefromwishlist = async (val) => {
     const tokenStr = localStorage.getItem("token");
     const product = await axios.get(
-      `http://192.168.43.76:5000/shop/deletefromwishlist/${val}`,
+      `${process.env.REACT_APP_API_URL}/shop/deletefromwishlist/${val}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
     // const newarr = wishlistidarray.filter((id) => id != val);

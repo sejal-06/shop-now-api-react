@@ -76,7 +76,7 @@ function Resetpassword() {
 
   async function logindetails() {
     try {
-      await axios.post(`http://192.168.43.76:5000/auth/resetmail`, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/auth/resetmail`, {
         email: formData.email,
       });
       window.location.reload();

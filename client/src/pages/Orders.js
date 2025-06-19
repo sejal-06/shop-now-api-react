@@ -39,7 +39,7 @@ function Orders() {
     try {
       const tokenStr = localStorage.getItem("token");
       var allorders = await axios.get(
-        `http://192.168.43.76:5000/shop/allorders`,
+        `${process.env.REACT_APP_API_URL}/shop/allorders`,
         {
           headers: { Authorization: `Bearer ${tokenStr}` },
         }
@@ -63,12 +63,12 @@ function Orders() {
           var productjson;
           try {
             productjson = await axios.get(
-              `http://192.168.43.76:5000/shop/product/${id}`
+              `${process.env.REACT_APP_API_URL}/shop/product/${id}`
             );
           } catch (err) {
             if (err.response && err.response.data.msg == "product not found") {
               productjson = await axios.get(
-                `http://192.168.43.76:5000/admin/deletedproduct/${id}`
+                `${process.env.REACT_APP_API_URL}/admin/deletedproduct/${id}`
               );
               deleted.push(id);
             }

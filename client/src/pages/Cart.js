@@ -9,15 +9,17 @@ function Cart() {
   const [cartproducts, setcartproducts] = useState([]);
   // const [totalprice, settotalprice] = useState(0);
 
-  useEffect(async () => {
-    const tokenStr = localStorage.getItem("token");
-    const products = await axios.get(
-      `http://192.168.43.76:5000/shop/allproductsofcart`,
-      { headers: { Authorization: `Bearer ${tokenStr}` } }
-    );
-    setcartproducts(products.data.cart);
-    // console.log("in cart.js" + products.data.cart[0].productId);
-  });
+  useEffect(() => {
+    const fetchCart = async () => {
+      const tokenStr = localStorage.getItem("token");
+      const products = await axios.get(
+        `${process.env.REACT_APP_API_URL}/shop/allproductsofcart`,
+        { headers: { Authorization: `Bearer ${tokenStr}` } }
+      );
+      setcartproducts(products.data.cart);
+    };
+    fetchCart();
+  }, []); // Only run once on mount
 
   return (
     <div>

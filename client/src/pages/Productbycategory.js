@@ -11,7 +11,7 @@ function Productbycategory() {
 
   useEffect(async () => {
     const productslist = await axios.get(
-      `http://192.168.43.76:5000/shop/allproductsbycategory/${category}`
+      `${process.env.REACT_APP_API_URL}/shop/allproductsbycategory/${category}`
     );
     setproducts(productslist.data.products);
   }, []);

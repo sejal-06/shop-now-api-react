@@ -93,7 +93,7 @@ function Signup() {
     try {
       seterrormsg("");
       seterrorparam("");
-      await axios.post(`http://192.168.43.76:5000/auth/signup`, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, {
         firstname: formData.firstname,
         lastname: formData.lastname,
         username: formData.username,

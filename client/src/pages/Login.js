@@ -89,7 +89,7 @@ function Login() {
       seterrormsg("");
       setshowerror("");
       const loginres = await axios.post(
-        `http://192.168.43.76:5000/auth/login`,
+        `${process.env.REACT_APP_API_URL}/auth/login`,
         {
           email: formData.email,
           password: formData.password,

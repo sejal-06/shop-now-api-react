@@ -49,19 +49,21 @@ function ProductsCard(props) {
   const count = props.count;
   const classes = useStyles();
 
-  useEffect(async () => {
-    const tokenStr = localStorage.getItem("token");
-
-    const wishlistedproducts = await axios.get(
-      `http://192.168.43.76:5000/shop/allproductsofwishlist`,
-      { headers: { Authorization: `Bearer ${tokenStr}` } }
-    );
-    setwishlistidarray(wishlistedproducts.data.wishlist);
-  });
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const tokenStr = localStorage.getItem("token");
+      const wishlistedproducts = await axios.get(
+        `${process.env.REACT_APP_API_URL}/shop/allproductsofwishlist`,
+        { headers: { Authorization: `Bearer ${tokenStr}` } }
+      );
+      setwishlistidarray(wishlistedproducts.data.wishlist);
+    };
+    fetchWishlist();
+  }, []); // Only run once on mount
 
   useEffect(async () => {
     const firstpageprodsjson = await axios.get(
-      `http://192.168.43.76:5000/shop/allproducts/1`
+      `${process.env.REACT_APP_API_URL}/shop/allproducts/1`
     );
     setproductslist(firstpageprodsjson.data.products);
   }, []);
@@ -70,7 +72,7 @@ function ProductsCard(props) {
     const tokenStr = localStorage.getItem("token");
 
     const product = await axios.get(
-      `http://192.168.43.76:5000/shop/addtocart/${val}/1`,
+      `${process.env.REACT_APP_API_URL}/shop/addtocart/${val}/1`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
   };
@@ -79,7 +81,7 @@ function ProductsCard(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.43.76:5000/shop/addtowishlist/${val}`,
+        `${process.env.REACT_APP_API_URL}/shop/addtowishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -93,7 +95,7 @@ function ProductsCard(props) {
     try {
       const tokenStr = localStorage.getItem("token");
       const product = await axios.get(
-        `http://192.168.43.76:5000/shop/deletefromwishlist/${val}`,
+        `${process.env.REACT_APP_API_URL}/shop/deletefromwishlist/${val}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
     } catch (err) {
@@ -107,7 +109,7 @@ function ProductsCard(props) {
     setpageno(value);
 
     const productslistjson = await axios.get(
-      `http://192.168.43.76:5000/shop/allproducts/${value}`
+      `${process.env.REACT_APP_API_URL}/shop/allproducts/${value}`
     );
     setproductslist(productslistjson.data.products);
   };

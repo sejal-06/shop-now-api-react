@@ -218,7 +218,7 @@ function ProductsCardbyadmin(props) {
 
       const tokenStr = localStorage.getItem("token");
       await axios.post(
-        `http://192.168.43.76:5000/admin/editproduct/${editproductid}`,
+        `${process.env.REACT_APP_API_URL}/admin/editproduct/${editproductid}`,
         formdata,
         {
           headers: { Authorization: `Bearer ${tokenStr}` },
@@ -253,7 +253,7 @@ function ProductsCardbyadmin(props) {
     try {
       seteditproductid(id);
       const productjson = await axios.get(
-        `http://192.168.43.76:5000/shop/product/${id}`
+        `${process.env.REACT_APP_API_URL}/shop/product/${id}`
       );
 
       const productinfo = productjson.data.product;
@@ -333,7 +333,7 @@ function ProductsCardbyadmin(props) {
   const handleYes = async (val) => {
     // console.log(val);
     const tokenStr = localStorage.getItem("token");
-    await axios.get(`http://192.168.43.76:5000/admin/deleteproduct/${val}`, {
+    await axios.get(`${process.env.REACT_APP_API_URL}/admin/deleteproduct/${val}`, {
       headers: { Authorization: `Bearer ${tokenStr}` },
     });
 

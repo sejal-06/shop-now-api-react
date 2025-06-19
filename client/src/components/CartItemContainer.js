@@ -53,7 +53,7 @@ function CartItemCards(props) {
 
   const removefromcart = async (val) => {
     const tokenStr = localStorage.getItem("token");
-    await axios.get(`http://192.168.43.76:5000/shop/deletefromcart/${val}`, {
+    await axios.get(`${process.env.REACT_APP_API_URL}/shop/deletefromcart/${val}`, {
       headers: { Authorization: `Bearer ${tokenStr}` },
     });
 
@@ -78,7 +78,7 @@ function CartItemCards(props) {
     var countval = productarr[index].quantity + 1;
     const tokenStr = localStorage.getItem("token");
     await axios.get(
-      `http://192.168.43.76:5000/shop/changequantityofcartto/${id}/${countval}`,
+      `${process.env.REACT_APP_API_URL}/shop/changequantityofcartto/${id}/${countval}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
 
@@ -95,7 +95,7 @@ function CartItemCards(props) {
     var countval = productarr[index].quantity - 1;
     const tokenStr = localStorage.getItem("token");
     await axios.get(
-      `http://192.168.43.76:5000/shop/changequantityofcartto/${id}/${countval}`,
+      `${process.env.REACT_APP_API_URL}/shop/changequantityofcartto/${id}/${countval}`,
       { headers: { Authorization: `Bearer ${tokenStr}` } }
     );
 
@@ -113,7 +113,7 @@ function CartItemCards(props) {
     var cartproducts = props.cartproducts;
     for (var product of cartproducts) {
       var productbyid = await axios.get(
-        `http://192.168.43.76:5000/shop/product/${product.productId}`,
+        `${process.env.REACT_APP_API_URL}/shop/product/${product.productId}`,
         { headers: { Authorization: `Bearer ${tokenStr}` } }
       );
 
